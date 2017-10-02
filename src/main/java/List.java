@@ -27,7 +27,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public boolean isEmpty() {
-        return ;
+        return size() == 0;
     }
 
     @Override
@@ -53,9 +53,11 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public ListInterface<E> insert(E d) {
-        Node currentNode = head;
+        goToLast();
+        current.next = new Node(d, current, null);
 
         return null;
+//        return List;
     }
 
     @Override
@@ -70,17 +72,21 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public boolean find(E d) {
+        if (isEmpty()) {
+
+        }
+
         return false;
     }
 
     @Override
     public boolean goToFirst() {
-        if (size() == 0) {
+        if (isEmpty()) {
             return false;
         }
 
-        while (current.next != null) {
-            current = current.next;
+        while (current.prior != null) {
+            current = current.prior;
         }
 
         return true;
@@ -88,7 +94,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public boolean goToLast() {
-        if (size() == 0) {
+        if (isEmpty()) {
             return false;
         }
 
