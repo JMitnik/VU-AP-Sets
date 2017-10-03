@@ -13,3 +13,5 @@ src/test/resources/
 .DS_STORE
 
 *.idea/*/*
+
+*.class
