@@ -12,9 +12,9 @@ interface Identifier {
     /**
      * Get the full value of the Identifier's name
      * @pre -
-     * @post - The full character representation of the identifier has been returned as char[].
+     * @post - The full character representation of the identifier has been returned as String.
      */
-    char[] getIdentifier();
+    String getIdentifier();
 
     /**
      * Adds a character to the identifier.
