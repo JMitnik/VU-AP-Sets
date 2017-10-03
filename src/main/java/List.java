@@ -37,18 +37,19 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public int size() {
-        return countNodes(head);
+        current = head;
+        return countNodes(current);
     }
 
     /**
      *
      */
-    private int countNodes(Node currentNode) {
-        if (currentNode == null) {
+    private int countNodes(Node iteratorNode) {
+        if (iteratorNode == null) {
             return 0;
         }
 
-        return 1 + countNodes(currentNode.next);
+        return 1 + countNodes(iteratorNode.next);
     }
 
     @Override
@@ -56,8 +57,8 @@ public class List<E extends Comparable> implements ListInterface<E>{
         goToLast();
         current.next = new Node(d, current, null);
 
-        return null;
-//        return List;
+        //todo: what do I return for this?
+        return this;
     }
 
     @Override
