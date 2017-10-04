@@ -1,69 +1,86 @@
 import java.math.BigInteger;
 
 /**
- * @structure - Linear
+ * @structure - no structure
  * @elements - Elements of type E
- * @domain - Unique elements of Type E
+ * @domain -
  * @pre -
  * @post - A new empty Set has been created to be filled with elements E
  * @constructor - Set()
  */
-interface Set<E extends Comparable<E>> {
+interface Set<E extends Comparable> {
+
     /**
-     * @param set
      * @pre -
-     * @post -
+     * @post - true has been returned if the set is empty, false otherwise.
      */
-    Set<E> union(Set<E> set);
+    boolean isEmpty();
 
     /**
-     * Adds an element 'E' to the set.
-     * @param el
      * @pre -
-     * @post - The element E has been added to the set at a random position.
+     * @post - a copy of the set has been returned.
      */
-    void add(E el);
+    Set<E> copy();
+
 
     /**
-     * Removes a random element from the set.
-     * @pre - The set is not empty.
-     * @post - The set is returned without a random element.
-     */
-    void remove();
-
-    /**
-     * Gets random element E from the set.
-     * @pre - The set is not empty.
-     * @post - An element
-     */
-    E getRandomElement();
-
-    /**
-     * Returns the number of elements in the set.
+     * @param
      * @pre -
-     * @post - The number of elements in the set has been returned.
-     * @return
+     * @post - the set contains element e.
+     */
+    void add(E e);
+
+    /**
+     * @param
+     * @pre -
+     * @post - the set does not contain element e.
+     */
+    void remove(E e);
+
+    /**
+     * @param
+     * @pre -
+     * @post - true has been returned if the set contains element e, false otherwise.
+     */
+    boolean contains(E e);
+
+    /**
+     * @pre -
+     * @post - an int has been returned representing the size of the set.
      */
     int cardinality();
 
     /**
-     * @param set
      * @pre -
-     * @post -
+     * @post - an int has been returned representing the size of the set.
+     */
+    List<E> retrieve();
+
+    /**
+     * @param
+     * @pre -
+     * @post - The union of this and set has been returned
+     */
+    Set<E> union(Set<E> set);
+
+    /**
+     * @param
+     * @pre -
+     * @post - The intersection of this and set has been returned
      */
     Set<E> intersection(Set<E> set);
 
     /**
-     * @param set
+     * @param
      * @pre -
-     * @post -
+     * @post - The complement of this and set has been returned.
      */
     Set<E> complement(Set<E> set);
 
     /**
-     * @param set
+     * @param
      * @pre -
-     * @post -
+     * @post - The symmetric difference of this and set has been returned
      */
     Set<E> symmDifference(Set<E> set);
 }

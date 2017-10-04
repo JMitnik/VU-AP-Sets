@@ -1,45 +1,24 @@
 /**
- *  @elements : Characters
- *	@structure : Linear
- *	@domain : Letters and numbers, where the first character is a letter.
- *	@constructor - Identifier(char);
+ *  @elements : -
+ *	@structure : -
+ *	@domain : 	-
+ *	@constructor - Identifier();
  *	<dl>
  *		<dt><b>PRE</b><dd>		- The Identifier
- *		<dt><b>POST</b><dd>  - A new empty Identifier has been created with the first char.
+ *		<dt><b>POST</b><dd> 	A new Identifier has been created with the given string from the constructor.
  * </dl>
  **/
 interface Identifier {
     /**
-     * Get the full value of the Identifier's name
-     * @pre - typo test
-     * @post - The full character representation of the identifier has been returned as char[].
+     * @pre -
+     * @post - the character has been added to Identifier
      */
-    char[] getIdentifier();
+    Identifier add(char c);
 
     /**
-     * Adds a character to the identifier.
+     * Get the String value of the Identifier's name
      * @pre -
-     * @post -
+     * @post - The name of the identifier has been returned as a String.
      */
-    void addChar(char character);
-
-    /**
-     * Removes the element at index 'index' of the char[].
-     * @pre -
-     * @post -
-     */
-    void removeChar(int index);
-
-    /**
-     * @pre -
-     * @post - An integer has been returned in the form of a hashCode.
-     */
-    int hashCode();
-
-    /**
-     * @pre -
-     * @post - The identifier has been compared to another object to check if it
-     * is the same.
-     */
-    boolean equals(Object o);
+    String getIdentifierName();
 }
