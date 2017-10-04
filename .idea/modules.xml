@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AP-Sets.iml" filepath="$PROJECT_DIR$/.idea/modules/AP-Sets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AP-Sets_main.iml" filepath="$PROJECT_DIR$/.idea/modules/AP-Sets_main.iml" group="AP-Sets" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AP-Sets_test.iml" filepath="$PROJECT_DIR$/.idea/modules/AP-Sets_test.iml" group="AP-Sets" />
+    </modules>
+  </component>
+</project>
