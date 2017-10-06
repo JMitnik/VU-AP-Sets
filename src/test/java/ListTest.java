@@ -37,6 +37,7 @@ public class ListTest {
 
         // Add item, init should still be empty.
         list.insert(new Letter('a'));
+        list.size();
         list.init();
         assertTrue("Init on non-empty list should return an empty list", list.isEmpty());
 
@@ -57,6 +58,7 @@ public class ListTest {
         for (int i = 0; i < 200; i++) {
             list.insert(new Letter('a'));
         }
+
         assertEquals("Adding many elements should result in a long list", 201, list.size());
 
         // Remove 1 item -> 200 items left
@@ -121,6 +123,10 @@ public class ListTest {
 
         // TODO: You can add more of your own tests. e.g.:
         // Insert duplicate item.
+        Letter b_2 = new Letter('b');
+        list.insert(b_2);
+        list.goToNext();
+        assertEquals(b_2, list.retrieve());
     }
 
     @Test

@@ -1,6 +1,5 @@
 public class List<E extends Comparable> implements ListInterface<E>{
-    Node head;
-    Node current;
+    private Node current;
 
     private class Node {
 
@@ -13,7 +12,6 @@ public class List<E extends Comparable> implements ListInterface<E>{
         }
 
         public Node(E data, Node prior, Node next) {
-            //TODO:
             this.data = data == null ? null : data;
             this.prior = prior;
             this.next = next;
@@ -21,60 +19,142 @@ public class List<E extends Comparable> implements ListInterface<E>{
     }
 
     List() {
-        Node head = null;
-        Node current = head;
+        this.current = null;
     }
 
     @Override
     public boolean isEmpty() {
-        return size() == 0;
+        return current == null;
     }
 
     @Override
     public ListInterface<E> init() {
-        return null;
+        current = null;
+        return this;
     }
 
     @Override
     public int size() {
-        current = head;
-        return countNodes(current);
+        Node currentHolder = current;
+        goToFirst();
+        int length = countNodes();
+        current = currentHolder;
+        return length;
     }
 
     /**
      *
      */
-    private int countNodes(Node iteratorNode) {
-        if (iteratorNode == null) {
+    private int countNodes() {
+        if (current == null) {
             return 0;
+        } else if (current.next == null) {
+            return 1;
+        } else {
+            goToNext();
+            return 1 + countNodes();
         }
+    }
 
-        return 1 + countNodes(iteratorNode.next);
+    /**
+     * @pre - List is not empty
+     * @return
+     */
+    private boolean isAtStart() {
+        return current.prior == null;
+    }
+
+    /**
+     * @pre - List is not empty
+     * @return
+     */
+    private boolean isAtEnd() {
+        return current.next == null;
+    }
+
+    /**
+     *
+     */
+    private void goToOrderIndex(E d) {
+        goToFirst();
+
+        while (d.compareTo(current.data) > 0 && !isAtEnd()) {
+            goToNext();
+        }
     }
 
     @Override
     public ListInterface<E> insert(E d) {
-        goToLast();
-        current.next = new Node(d, current, null);
+        if (isEmpty()) {
+            current = new Node(d, null, null);
+        } else {
+            goToOrderIndex(d);
+            insertInOrder(d);
+        }
 
         //todo: what do I return for this?
         return this;
     }
 
+    private void insertInOrder(E d) {
+        if (d.compareTo(current.data) > 0 ) {
+            insertLargerEl(d);
+        } else {
+            insertSmallerEqualEl(d);
+        }
+    }
+
+    private void insertLargerEl(E d) {
+        if (!isAtEnd()) {
+            current.next = current.next.prior = new Node(d, current, current.next);
+        } else {
+            current.next = new Node(d, current, null);
+        }
+
+        goToNext();
+    }
+
+    private void insertSmallerEqualEl(E d) {
+        if (!isAtStart()) {
+            current.prior = current.prior.next = new Node(d, current.prior, current);
+        } else {
+            current.prior = new Node(d, null, current);
+        }
+
+        goToPrevious();
+    }
+
     @Override
     public E retrieve() {
-        return null;
+        return current.data;
     }
 
     @Override
     public ListInterface<E> remove() {
-        return null;
+        if (size() == 1) {
+            current = null;
+        } else {
+            if (isAtStart()) {
+                goToNext();
+                current.prior = null;
+            }
+            else if (isAtEnd()) {
+                goToPrevious();
+                current.next = null;
+            } else {
+                current.prior.next = current.next;
+                current.next.prior = current.prior;
+                goToNext();
+            }
+        }
+
+        return this;
     }
 
     @Override
     public boolean find(E d) {
         if (isEmpty()) {
-
+            return false;
         }
 
         return false;
@@ -86,7 +166,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
             return false;
         }
 
-        while (current.prior != null) {
+        while (!isAtStart()) {
             current = current.prior;
         }
 
@@ -99,7 +179,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
             return false;
         }
 
-        while (current.next != null) {
+        while (!isAtEnd()) {
             current = current.next;
         }
 
@@ -108,6 +188,10 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public boolean goToNext() {
+        if (isEmpty()) {
+            return false;
+        }
+
         if (current.next != null) {
             current = current.next;
             return true;
@@ -118,6 +202,10 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public boolean goToPrevious() {
+        if (isEmpty()) {
+            return false;
+        }
+
         if (current.prior != null) {
             current = current.prior;
             return true;
