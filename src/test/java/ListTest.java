@@ -291,6 +291,37 @@ public class ListTest {
         // TODO: You can add more of your own tests.
     }
 
+    @Test
+    public void testCopy() {
+
+        // Initialize List
+        List<Letter> list = new List<>();
+        Letter a = new Letter('a');
+        Letter b = new Letter('b');
+        Letter c = new Letter('c');
+        Letter d = new Letter('d');
+        list.insert(a);
+        list.insert(b);
+        list.insert(c);
+        list.insert(d);
+        list.goToLast();
+
+        // Copy regular list
+        List<Letter> list2 = (List<Letter>) list.copy(); //Todo: Casting works, without it doesn't, why?
+
+        // Copy empty list
+        List<Letter> listEmpty = new List<>();
+        List<Letter> listEmpty2 = (List<Letter>) listEmpty.copy();
+        assertEquals("Not empty List!", listEmpty.size(), listEmpty2.size());
+
+        // Copy list with one element
+        List<Letter> listSingular = new List<>();
+        Letter e = new Letter('e');
+        listSingular.insert(e);
+        List<Letter> listSingular2 = (List<Letter>) listSingular.copy();
+        assertEquals("Not equal value of element!", listSingular.retrieve(), listSingular2.retrieve());
+    }
+
 
     /**
      * Represents a comparable and clonable Letter.

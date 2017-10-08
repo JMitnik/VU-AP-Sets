@@ -8,7 +8,7 @@ import java.math.BigInteger;
  * @post - A new empty Set has been created to be filled with elements E
  * @constructor - Set()
  */
-interface Set<E extends Comparable<E>> {
+interface Set<E extends Comparable> {
     /**
      * @param set
      * @pre -
@@ -22,7 +22,7 @@ interface Set<E extends Comparable<E>> {
      * @pre -
      * @post - The element E has been added to the set at a random position.
      */
-    void add(E el);
+    void addEl(E el);
 
     /**
      * Removes a random element from the set.
@@ -30,13 +30,6 @@ interface Set<E extends Comparable<E>> {
      * @post - The set is returned without a random element.
      */
     void remove();
-
-    /**
-     * Gets random element E from the set.
-     * @pre - The set is not empty.
-     * @post - An element
-     */
-    E getRandomElement();
 
     /**
      * Returns the number of elements in the set.

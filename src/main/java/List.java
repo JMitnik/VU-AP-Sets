@@ -216,6 +216,20 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public ListInterface<E> copy() {
-        return null;
+        List result = new List();
+
+        if (!isEmpty()) {
+            goToFirst();
+
+            while (!isAtEnd()) {
+                result.insert(retrieve());
+                goToNext();
+            }
+
+            result.insert(retrieve());
+            return result;
+        } else {
+            return result.init();
+        }
     }
 }
