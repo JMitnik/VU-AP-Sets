@@ -17,7 +17,7 @@ public class SetImp<E extends Comparable> implements Set<E>{
 
     @Override
     public void addEl(E el) {
-        if (!elements.find(el)) { //TODO: Assumes we can use the list implementation and find property?
+        if (!find(el)) { //TODO: Assumes we can use the list implementation and find property?
             elements.insert(el);
         }
     }
@@ -92,7 +92,7 @@ public class SetImp<E extends Comparable> implements Set<E>{
         Set workingSetRhs = set.copy();
 
         while (workingSetRhs.cardinality() != 0) {
-            E el = (E) workingSetLhs.remove();
+            E el = (E) workingSetRhs.remove();
 
             if (!workingSetLhs.find(el)) {
                 result.addEl(el);
