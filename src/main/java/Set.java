@@ -1,12 +1,13 @@
 import java.math.BigInteger;
 
 /**
- * @structure - Linear
+ * @structure - Linear //todo: You sure?
  * @elements - Elements of type E
  * @domain - Unique elements of Type E
  * @pre -
  * @post - A new empty Set has been created to be filled with elements E
  * @constructor - Set()
+ * //todo: extra constructor
  */
 interface Set<E extends Comparable> {
     /**
@@ -29,7 +30,7 @@ interface Set<E extends Comparable> {
      * @pre - The set is not empty.
      * @post - The set is returned without a random element.
      */
-    void remove();
+    E remove();
 
     /**
      * Returns the number of elements in the set.
@@ -59,4 +60,9 @@ interface Set<E extends Comparable> {
      * @post -
      */
     Set<E> symmDifference(Set<E> set);
+
+    Set<E> copy();
+
+    //todo: Can I use?
+    boolean find(E el);
 }
