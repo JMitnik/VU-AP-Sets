@@ -5,6 +5,10 @@ public class IdentiferImp implements Identifier {
 
     private StringBuffer identifierCharacters;
 
+    public IdentiferImp() {
+        this.identifierCharacters = new StringBuffer();
+    }
+
     @Override
     public String getIdentifier() {
         return identifierCharacters.toString();

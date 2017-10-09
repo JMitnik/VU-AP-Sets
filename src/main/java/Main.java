@@ -4,16 +4,16 @@ import java.util.Scanner;
 
 public class Main {
 
-    private void start() {         //todo: Does this throw APException?
+    private void start() {
         Scanner input = new Scanner(System.in);
-        Parser parser = new Parser();
+        Interpreter interpreter = new Interpreter();
 
         try {
             while (input.hasNext()) {
-                parser.parseStatement(input);
+                interpreter.readStatement(input);
             }
 
-//            parser.parseEndOfFile(input);
+//            interpreter.readEndOfFile(input);
         } catch (APException e) {
             throw new Error("New error", e);
         }
