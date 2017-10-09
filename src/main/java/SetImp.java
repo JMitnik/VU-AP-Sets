@@ -3,7 +3,11 @@ import java.math.BigInteger;
 public class SetImp<E extends Comparable> implements Set<E>{
     private ListInterface<E> elements;
 
-    //TODO: General, can I insert methods like getElements in general, or is that cheating?
+    //TODO: Sets
+    //TODO - Can we use a getter to get simply all elements of a Set through its list?
+    //TODO - How do we integrate a list into a set in this case?
+    //TODO - Can we use the implementation's List find() function, or do we remove all elements like the method does?
+    //TODO - (I should probably Google this) Why do we have to cast an element to E when we know we remove an E?
 
     SetImp() {
         //todo: Usage of List: do I instantiate it as a property, extend the List, or instantiate it in the program and give it to the constructor?

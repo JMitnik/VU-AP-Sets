@@ -1,4 +1,8 @@
 public class List<E extends Comparable> implements ListInterface<E>{
+
+    //TODO: List
+    // TODO: - Do we return 'this' when it asks for ListInterface<E>?
+
     private Node current;
 
     private class Node {

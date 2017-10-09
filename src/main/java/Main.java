@@ -13,7 +13,7 @@ public class Main {
                 parser.parseStatement(input);
             }
 
-            parser.parseEndOfFile(input);
+//            parser.parseEndOfFile(input);
         } catch (APException e) {
             throw new Error("New error", e);
         }

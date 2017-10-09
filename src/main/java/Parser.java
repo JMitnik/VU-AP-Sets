@@ -4,6 +4,11 @@ import java.util.regex.Pattern;
 public class Parser {
     Parser() {}
 
+    //TODO Parser questions:
+    //TODO: - Do we ignore whitespace, parse an unlimited amount of whitespace?
+    //TODO: - During parsing, we store/build the factors. Do we return these somehow to the main HashTable, or do we instantiate HashTable here?
+    //TODO: - How do we parse EoF?
+
     public void parseStatement(Scanner input) throws APException {
         if (nextCharIs(input, '?')) {
             parsePrintStatement(input);
@@ -105,7 +110,7 @@ public class Parser {
         parseIdentifier(input);
         parseCharacter(input, '=');
         parseExpression(input);
-        parseEndOfLine(input);
+//        parseEndOfLine(input);
     }
 
     private void parseComment(Scanner input) throws APException {
@@ -115,13 +120,12 @@ public class Parser {
             input.next();
         }
 
-        parseEndOfLine(input);
+//        parseEndOfLine(input);
     }
 
     private void parseEndOfLine(Scanner input) {
 
     }
-
 
     private void parseEndOfFile(Scanner input) throws APException {
 

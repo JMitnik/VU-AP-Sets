@@ -1,4 +1,8 @@
 public class IdentiferImp implements Identifier {
+
+    //TODO: Identifier
+    //TODO - Is the hashCode() really just the hashCode of a String object?
+
     private StringBuffer identifierCharacters;
 
     @Override
