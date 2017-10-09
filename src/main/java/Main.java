@@ -6,7 +6,8 @@ public class Main {
 
     private void start() {
         Scanner input = new Scanner(System.in);
-        Interpreter interpreter = new Interpreter();
+        Hashtable<IdentiferImp, SetImp> hashTable = new Hashtable<>();
+        Interpreter interpreter = new Interpreter(hashTable);
 
         try {
             while (input.hasNext()) {

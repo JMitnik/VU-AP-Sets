@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="be95a314-98f1-42fa-8666-9f963b1ceded" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/InterpreterTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/test/java/ParserTest.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/Parser.java" afterPath="$PROJECT_DIR$/src/main/java/Interpreter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/IdentiferImp.class" afterPath="$PROJECT_DIR$/out/production/classes/IdentiferImp.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/List$Node.class" afterPath="$PROJECT_DIR$/out/production/classes/List$Node.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/List.class" afterPath="$PROJECT_DIR$/out/production/classes/List.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/Main.class" afterPath="$PROJECT_DIR$/out/production/classes/Main.class" />
+    <list default="true" id="be95a314-98f1-42fa-8666-9f963b1ceded" name="Default" comment="Interpreter">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/IdentiferImp.java" afterPath="$PROJECT_DIR$/src/main/java/IdentiferImp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/List.java" afterPath="$PROJECT_DIR$/src/main/java/List.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/SetImp.java" afterPath="$PROJECT_DIR$/src/main/java/SetImp.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Interpreter.java" afterPath="$PROJECT_DIR$/src/main/java/Interpreter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Main.java" afterPath="$PROJECT_DIR$/src/main/java/Main.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -53,8 +45,8 @@
       <file leaf-file-name="List.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/List.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="4" column="41" lean-forward="false" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
+            <state relative-caret-position="370">
+              <caret line="234" column="26" lean-forward="true" selection-start-line="234" selection-start-column="26" selection-end-line="234" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -63,10 +55,9 @@
       <file leaf-file-name="IdentiferImp.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/IdentiferImp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="14" lean-forward="true" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+            <state relative-caret-position="-44">
+              <caret line="7" column="27" lean-forward="true" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
               <folding>
-                <element signature="e#225#226#0" expanded="true" />
                 <element signature="e#287#288#0" expanded="true" />
                 <element signature="e#338#339#0" expanded="true" />
                 <element signature="e#392#393#0" expanded="true" />
@@ -84,30 +75,32 @@
       <file leaf-file-name="InterpreterTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/InterpreterTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
+            <state relative-caret-position="232">
               <caret line="59" column="0" lean-forward="true" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Interpreter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="20" column="5" lean-forward="true" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
+            <state relative-caret-position="2340">
+              <caret line="123" column="8" lean-forward="false" selection-start-line="123" selection-start-column="8" selection-end-line="123" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#185#186#0" expanded="true" />
+                <element signature="e#227#228#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="15" column="25" lean-forward="false" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+            <state relative-caret-position="115">
+              <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -152,6 +145,7 @@
       <find>+</find>
       <find>assigN</find>
       <find>retri</find>
+      <find>assign</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -571,13 +565,13 @@
         <option value="$PROJECT_DIR$/src/test/java/SetTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/ParserTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/IdentiferImp.java" />
-        <option value="$PROJECT_DIR$/src/main/java/List.java" />
         <option value="$PROJECT_DIR$/src/main/java/SetImp.java" />
         <option value="$PROJECT_DIR$/src/main/java/Parser.java" />
         <option value="$PROJECT_DIR$/src/test/java/Interpreter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Interpreter.java" />
         <option value="$PROJECT_DIR$/src/test/java/InterpreterTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/List.java" />
         <option value="$PROJECT_DIR$/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Interpreter.java" />
       </list>
     </option>
   </component>
@@ -933,7 +927,7 @@
       <workItem from="1507203364304" duration="538000" />
       <workItem from="1507225976324" duration="2078000" />
       <workItem from="1507228331711" duration="12768000" />
-      <workItem from="1507485283187" duration="24891000" />
+      <workItem from="1507485283187" duration="25388000" />
     </task>
     <task id="LOCAL-00001" summary="Init of Assignment 2">
       <created>1506272385374</created>
@@ -1033,7 +1027,14 @@
       <option name="project" value="LOCAL" />
       <updated>1507546670566</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Interpreter">
+      <created>1507559711310</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1507559711310</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1069,7 +1070,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68548000" />
+    <option name="totallyTimeSpent" value="69045000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
@@ -1128,7 +1129,8 @@
     <MESSAGE value="Identifiers" />
     <MESSAGE value="Parser" />
     <MESSAGE value="Questions and Parser Improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Questions and Parser Improvements" />
+    <MESSAGE value="Interpreter" />
+    <option name="LAST_COMMIT_MESSAGE" value="Interpreter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1346,6 +1348,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="667">
           <caret line="52" column="17" lean-forward="false" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1508,38 +1511,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/List.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="41" lean-forward="false" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Interpreter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="20" column="5" lean-forward="true" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
+        <state relative-caret-position="115">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/InterpreterTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="59" column="0" lean-forward="true" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/IdentiferImp.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="14" lean-forward="true" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+        <state relative-caret-position="-44">
+          <caret line="7" column="27" lean-forward="true" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
           <folding>
-            <element signature="e#225#226#0" expanded="true" />
             <element signature="e#287#288#0" expanded="true" />
             <element signature="e#338#339#0" expanded="true" />
             <element signature="e#392#393#0" expanded="true" />
@@ -1553,12 +1539,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/List.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="25" lean-forward="false" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+        <state relative-caret-position="370">
+          <caret line="234" column="26" lean-forward="true" selection-start-line="234" selection-start-column="26" selection-end-line="234" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/InterpreterTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="59" column="0" lean-forward="true" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2340">
+          <caret line="123" column="8" lean-forward="false" selection-start-line="123" selection-start-column="8" selection-end-line="123" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#185#186#0" expanded="true" />
+            <element signature="e#227#228#0" expanded="true" />
           </folding>
         </state>
       </provider>

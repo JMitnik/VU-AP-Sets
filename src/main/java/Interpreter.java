@@ -1,8 +1,13 @@
+import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Interpreter {
-    Interpreter() {}
+    private Hashtable hashTable;
+
+    Interpreter(Hashtable hashTable) {
+        this.hashTable = hashTable;
+    }
 
     //TODO Parser questions:
     //TODO: - Do we ignore whitespace, read an unlimited amount of whitespace?
@@ -117,6 +122,7 @@ public class Interpreter {
         readIdentifier(input);
         readCharacter(input, '=');
         readExpression(input);
+
 //        readEndOfLine(input);
     }
 
