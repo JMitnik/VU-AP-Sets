@@ -11,36 +11,36 @@
  * </dl>
  **/
 
-public interface ListInterface<E extends Comparable> {
+public abstract interface ListInterface<E extends Comparable> {
 
     /**	@precondition -
      *  @postcondition - FALSE: list is not empty.
      *  				TRUE:  list is empty.
      **/
-    boolean isEmpty();
+    public abstract boolean isEmpty();
 
     /** @precondition  -
      *	@postcondition - list-POST is empty and has been returned.
      **/
-    ListInterface<E> init();
+    public abstract ListInterface<E> init();
 
     /**	@precondition  -
      *	@postcondition - The number of elements has been returned.
      **/
-    int size();
+    public abstract int size();
 
     /** @precondition  -
      *	@postcondition - Element d has been added to List-PRE.
      *    				current points to the newly added element.
      *   				list-POST has been returned.
      **/
-    ListInterface<E> insert(E d);
+    public abstract ListInterface<E> insert(E d);
 
 
     /** @precondition  - The list is not empty.
      *	@postcondition -The value of the current element has been returned.
      */
-    E retrieve();
+    public abstract E retrieve();
 
 
     /** @precondition  - The list is not empty.
@@ -55,7 +55,7 @@ public interface ListInterface<E extends Comparable> {
      *     							the element after current-PRE
      *  				list-POST has been returned.
      **/
-    ListInterface<E> remove();
+    public abstract ListInterface<E> remove();
 
 
     /** @precondition  -
@@ -71,39 +71,39 @@ public interface ListInterface<E extends Comparable> {
      *        				else
      *	    					the last element in list with value < d
      **/
-    boolean find(E d);
+    public abstract boolean find(E d);
 
 
     /** @precondition  -
      *	@postcondition - FALSE: list is empty
      *    				TRUE:  current points to the first element
      **/
-    boolean goToFirst();
+    public abstract boolean goToFirst();
 
 
     /**	@precondition  -
      *	@postcondition - FALSE: list is empty
      *     				TRUE:  current points to the last element
      */
-    boolean goToLast();
+    public abstract boolean goToLast();
 
 
     /** @precondition  -
      *	@postcondition - FALSE: list is empty or current points to the last element
      *     				TRUE:  current-POST points to the next element of current-PRE
      */
-    boolean goToNext();
+    public abstract boolean goToNext();
 
 
     /** @precondition  -
      *	@postcondition - FALSE: list is empty of current points to the first element
      *     				TRUE:  current-POST points to the prior element of current-PRE
      */
-    boolean goToPrevious();
+    public abstract boolean goToPrevious();
 
     /**
      * @precondition -
      * @postcondition A deep copy of the list has been returned.
      */
-    ListInterface<E> copy();
+    public abstract ListInterface<E> copy();
 }

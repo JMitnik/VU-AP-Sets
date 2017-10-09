@@ -1,6 +1,4 @@
-import org.junit.*;
-import static org.junit.Assert.*;
-
+import static org.junit.;//Assert.*;
 /**
  * Created by Sebastian on 08/08/15.
  */

@@ -3,7 +3,7 @@ public class IdentifierImpl implements Identifier {
     private int numberOfElements;
     private static final int INITIAL_SIZE = 10;
 
-    private IdentifierImpl() {
+    public IdentifierImpl() {
         characters = new char[ INITIAL_SIZE ];
         numberOfElements = 0;
     }
