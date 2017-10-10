@@ -12,15 +12,18 @@ public class IdentifierImpl implements Identifier {
         if( characters.length == numberOfElements) {
             this.extendArray();
         }
+
         characters [ numberOfElements++ ] = ch;
         return this;
     }
 
     private void extendArray() {
         char[] tmp = new char[ 2* characters.length ];
+
         for(int i = 0; i < characters.length; i++) {
             tmp[i] = characters[i];
         }
+
         characters = tmp;
     }
 
@@ -34,6 +37,7 @@ public class IdentifierImpl implements Identifier {
             Identifier id = (Identifier) ob;
             return this.getIdentifierName().equals( id.getIdentifierName() );
         }
+
         return false;
     }
 
@@ -43,11 +47,5 @@ public class IdentifierImpl implements Identifier {
     }
 
     public static void main(String[] argv) {
-        Identifier Id = new IdentifierImpl();
-        Identifier a = new IdentifierImpl();
-        a.add('l').add('p').add('k');
-        Id.add('l').add('p').add('k');
-        System.out.println( Id.getIdentifierName() );
-        System.out.println( Id.equals(a) );
     }
 }

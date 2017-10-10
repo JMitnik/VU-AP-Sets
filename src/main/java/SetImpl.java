@@ -54,6 +54,7 @@ public class SetImpl<E extends  Comparable> implements Set<E> {
             return set.copy();
         } else if ( set.isEmpty() ) {
             return this.copy();
+
         } else {
             List<E> comlist = set.retrieve();
             comlist.goToFirst();
@@ -61,6 +62,7 @@ public class SetImpl<E extends  Comparable> implements Set<E> {
             int i = 0;
             while( i < comlist.size() ) {
                 union.add( comlist.retrieve() );
+                comlist.goToNext();
                 i++;
             }
             return union;
@@ -71,7 +73,9 @@ public class SetImpl<E extends  Comparable> implements Set<E> {
         if ( set.isEmpty() || this.isEmpty() ) {
             return new SetImpl<>();
         }
+
         Set<E> intersection = new SetImpl<>();
+
         this.retrieve().goToFirst();
         while ( this.retrieve().hasNext() ) {
             if ( set.contains( this.retrieve().retrieve() ) ) {
@@ -79,10 +83,12 @@ public class SetImpl<E extends  Comparable> implements Set<E> {
             }
             this.retrieve().goToNext();
         }
+
         if (set.contains( this.retrieve().retrieve() ) ) {
             // have to check the last element because the while loop stops before checking the last element.
             intersection.add(this.retrieve().retrieve() );
         }
+
         return intersection;
     }
 
@@ -91,43 +97,33 @@ public class SetImpl<E extends  Comparable> implements Set<E> {
             return this.copy();
         } else if (this.isEmpty()) {
             return new SetImpl<>();
+
         } else {
             Set<E> complement = new SetImpl<>();
-            this.list.goToFirst();
-            while (this.list.hasNext()) {
-                if (!(set.contains( this.list.retrieve() ) )) {
-                    complement.add( this.list.retrieve() );
+            List<E> tlist = this.list;
+            tlist.goToFirst();
+
+            while (tlist.hasNext()) {
+                if (!(set.contains( tlist.retrieve() ))) {
+                    complement.add( tlist.retrieve() );
                 }
-                this.list.goToNext();
+                tlist.goToNext();
             }
+
             // have to check the last element because the while loop stops before checking the last element.
-            if (!(set.contains( this.list.retrieve() ) )) {
-                complement.add( this.list.retrieve() );
+            if (!(set.contains( tlist.retrieve() ) )) {
+                complement.add( tlist.retrieve() );
             }
+
             return complement;
         }
 
     }
 
     public Set<E> symmDifference(Set<E> set) {
-        Set<E> symdif = this.union(set).complement(this.intersection(set));
-        return symdif;
+        return this.union(set).complement( this.intersection(set) );
     }
 
     public static void main(String[] argv) {
-        SetImpl<BigInteger> set1 = new SetImpl<>();
-        set1.add( BigInteger.valueOf(5) );
-        set1.add( BigInteger.valueOf(67) );
-        set1.add( BigInteger.valueOf(10));
-        set1.add( BigInteger.valueOf(100));
-        SetImpl<BigInteger> set2 = new SetImpl<>();
-        set2.add( BigInteger.valueOf(5) );
-        set2.add( BigInteger.valueOf(6) );
-        set2.add( BigInteger.valueOf(10));
-        set2.add( BigInteger.valueOf(100));
-        set2.add( BigInteger.valueOf(22));
-        set2.add( BigInteger.valueOf(18));
-        set2.add( BigInteger.valueOf(17));
-        System.out.println( set2.symmDifference(set1).retrieve().toString() );
     }
 }

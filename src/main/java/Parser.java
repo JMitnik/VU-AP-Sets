@@ -19,6 +19,8 @@ public class Parser {
     }
 
     public static void readStatement(Scanner input) throws APException {
+        terminateSpaces(input);
+
         if( nextCharIs(input, '/') ) {
             readCharacter(input, '/');
 
@@ -28,6 +30,7 @@ public class Parser {
         } else if (nextCharIs(input, '?')) {
             readCharacter(input, '?');
             System.out.println( readExpression(input) );
+            //readEol(input);
 
         } else {
             throw new APException("'/', '?', or a character (\"[a-zA-Z]\") was expected at the beginning of a statement!");
@@ -43,19 +46,26 @@ public class Parser {
     }
 
     public static Set<BigInteger> readExpression(Scanner input) throws APException {
+        terminateSpaces(input);
         Set<BigInteger> result = readTerm(input);
 
 
         while( input.hasNext("[|\\-+]") ){
             if (nextCharIs(input, '|')) {
                 readCharacter(input, '|');
+                terminateSpaces(input);
                 result = result.symmDifference( readTerm(input) );
+
             } else if (nextCharIs(input, '-')) {
                 readCharacter(input, '-');
+                terminateSpaces(input);
                 result = result.complement( readTerm(input) );
+
             } else if (nextCharIs(input, '+')) {
                 readCharacter(input, '+');
+                terminateSpaces(input);
                 result = result.union( readTerm(input) );
+
             } else {
                 throw new APException("Expected an additive operator! Found: '" + nextChar(input) + "'");
             }
@@ -67,10 +77,12 @@ public class Parser {
     // term = factor { multiplicative_operator factor } ; A term is a factor,
     // followed by 0 or more factors. All factors are separated by a multiplicative-operator.
     public static Set<BigInteger> readTerm(Scanner input) throws APException {
+        terminateSpaces(input);
         Set<BigInteger> result = readFactor(input);
 
         while(nextCharIs(input,'*')) {
             readCharacter(input, '*');
+            terminateSpaces(input);
             result = result.intersection( readTerm(input) );
         }
 
@@ -80,22 +92,30 @@ public class Parser {
     // factor = identifier | complex_factor | set ; A factor is an identifier,
     // a complex factor or a set.
     public static Set<BigInteger> readFactor(Scanner input) throws APException {
+        terminateSpaces(input);
         Set<BigInteger> result;
 
-        if (nextCharIsLetter(input)) {
+        if ( nextCharIsLetter(input) ) {
             Identifier id = readIdentifier(input);
+
             if (variables.containsKey(id)) {
                 result = variables.get(id);
             } else {
                 throw new APException("No variable assigned to '" + id.getIdentifierName() + "'!");
             }
+
         } else if ( nextCharIs(input, '{') ) {
             result = readSet(input);
-            //complex_factor = '(' expression ')' ; A complex factor is an expression between round brackets.
+
         } else if ( nextCharIs(input, '(') ) {
             readCharacter(input, '(');
+            terminateSpaces(input);
+
             result = readExpression(input);
+
+            terminateSpaces(input);
             readCharacter(input, ')');
+
         } else {
             throw new APException("Expected a factor! Found: '" + input.next() + "'" );
         }
@@ -109,8 +129,12 @@ public class Parser {
     //A row of natural numbers is empty or a summation of one or more natural numbers separated by commas.
     public static Set<BigInteger> readSet(Scanner input) throws APException {
         readCharacter(input, '{');
+        terminateSpaces(input);
+
         if ( nextCharIs(input, '}') ) {
             readCharacter(input, '}');
+            terminateSpaces(input);
+
             return new SetImpl<>();
         }
 
@@ -126,11 +150,14 @@ public class Parser {
     }
 
     private static Set<BigInteger> addValues(Scanner input, Set<BigInteger> set) throws APException {
+        terminateSpaces(input);
+
         if ( nextCharIs(input, '}') ) {
             readCharacter(input, '}');
             return set;
         } else {
             readCharacter(input, ',');
+            terminateSpaces(input);
             StringBuilder val = new StringBuilder("");
 
             while(nextCharIsDigit(input)) {
@@ -146,9 +173,15 @@ public class Parser {
 
     public static void readAssignment(Scanner input) throws APException {
         Identifier id = readIdentifier(input);
+        terminateSpaces(input);
+
         readCharacter(input, '=');
+
+        terminateSpaces(input);
         Set<BigInteger> set = readExpression(input);
+        terminateSpaces(input);
         readEol(input);
+
         assign(id, set);
     }
 
@@ -175,15 +208,31 @@ public class Parser {
         nextChar(input);
     }
 
-    // checks if the line has ended. If there is more input, it throws an APException.
+    // checks if the line has ended. If there is more input, throws an APException.
     public  static void readEol(Scanner input) throws APException {
-       // if ( input.hasNext() ) {
-       //     throw new APException("Expected an <eol>, found: '" + nextChar(input) + "'");
-       // }
+        terminateSpaces(input);
+
+
+        //if ( input.hasNext() ) {
+        //    throw new APException("Expected an <eol>, found: '" + nextChar(input) + "'");
+        //}
     }
 
-    public static void terminateSpace(Scanner input) throws APException {
+    // TODO implement this
+    public static BigInteger readBigInteger(Scanner input) {
+       StringBuilder val = new StringBuilder();
 
+       while ( nextCharIsDigit(input) ) {
+           val.append( nextChar(input) );
+       }
+
+       return new BigInteger( val.toString() );
+    }
+
+    public static void terminateSpaces(Scanner input) throws APException {
+        while ( nextCharIs(input, ' ')) {
+            readCharacter(input, ' ');
+        }
     }
 
     // Method to read 1 character.
@@ -209,8 +258,9 @@ public class Parser {
         return in.hasNext("[A-Za-z]");
     }
 
+
     public static void main(String[] argv) {
-        System.out.println("Set<BigInteger> Calculator");
+        System.out.println("Set Calculator");
         System.out.print("Input:\n> ");
 
         Scanner in = new Scanner(System.in);
