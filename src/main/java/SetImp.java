@@ -4,17 +4,15 @@ public class SetImp<E extends Comparable> implements Set<E>{
     private ListInterface<E> elements;
 
     //TODO: Sets
-    //TODO - How do we integrate a list into a set in this case?
     //TODO - Can we copy a set by using an extra constructor?
-    //TODO - Can we use the implementation's List find() function, or do we remove all elements like the method does?
 
     SetImp() {
         //todo: Usage of List: do I instantiate it as a property, extend the List, or instantiate it in the program and give it to the constructor?
         this.elements = new List<E>();
     }
 
-    SetImp(ListInterface<E> elements) {
-        this.elements = elements;
+    SetImp(SetImp<E> set) {
+        this.elements = set.elements.copy();
     }
 
     @Override

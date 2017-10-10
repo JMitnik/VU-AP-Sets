@@ -9,14 +9,16 @@ public class Main {
         Hashtable<IdentiferImp, SetImp> hashTable = new Hashtable<>();
         Interpreter interpreter = new Interpreter(hashTable);
 
-        try {
-            while (input.hasNext()) {
+        //todo: Put while loop around
+        while (input.hasNext()) {
+            try {
                 interpreter.readStatement(input);
             }
-
+            catch (APException e) {
+                //todo: print out the error
+                throw new Error("New error", e);
+            }
 //            interpreter.readEndOfFile(input);
-        } catch (APException e) {
-            throw new Error("New error", e);
         }
     }
 

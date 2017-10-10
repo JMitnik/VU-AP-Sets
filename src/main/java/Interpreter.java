@@ -8,11 +8,7 @@ public class Interpreter {
     Interpreter(Hashtable hashTable) {
         this.hashTable = hashTable;
     }
-
-    //TODO Parser questions:
-    //TODO: - Do we ignore whitespace, read an unlimited amount of whitespace?
-    //TODO: - How do we read EoF?
-
+    //todo: Insert whitespace ignorer in 'right' places
     public void readStatement(Scanner input) throws APException {
         if (nextCharIs(input, '?')) {
             readPrintStatement(input);
@@ -30,7 +26,8 @@ public class Interpreter {
         readExpression(input);
     }
 
-    private void readExpression(Scanner input) throws APException {
+    private Set readExpression(Scanner input) throws APException {
+        Set result = new SetImp();
         readTerm(input);
 
         while (nextCharIsAdditive(input)) {
@@ -39,13 +36,15 @@ public class Interpreter {
         }
     }
 
-    private void readTerm(Scanner input) throws APException {
-        readFactor(input);
+    private Set readTerm(Scanner input) throws APException {
+        Set result = readFactor(input);
 
         while (nextCharIs(input, '*')) {
             nextChar(input);
-            readFactor(input);
+            result.intersection(readFactor(input));
         }
+
+        return result;
     }
 
     private void readCharacter(Scanner input, char c) throws APException {
@@ -57,7 +56,7 @@ public class Interpreter {
     }
 
     //returns Set
-    private void readFactor(Scanner input) throws APException {
+    private Set readFactor(Scanner input) throws APException {
         if (nextCharIsLetter(input)) {
             readIdentifier(input);
             //todo: checkifexists
@@ -73,18 +72,20 @@ public class Interpreter {
         }
     }
 
-    private void readIdentifier(Scanner input) throws APException {
-         if (nextCharIsLetter(input)) {
-             nextChar(input);
-         } else {
-             throw new APException("Identifier not proper syntax");
-         }
+    private Identifier readIdentifier(Scanner input) throws APException {
+        Identifier result = new IdentiferImp();
 
-         while (nextCharIsLetter(input) || nextCharIsDigit(input)) {
-             nextChar(input);
-         }
+        if (nextCharIsLetter(input)) {
+            nextChar(input);
+        } else {
+            throw new APException("Identifier not proper syntax");
+        }
 
-         //return new Identifier
+        while (nextCharIsLetter(input) || nextCharIsDigit(input)) {
+            nextChar(input);
+        }
+
+        return result;
     }
 
     private void readComplexFactor(Scanner input) throws APException {
@@ -122,8 +123,8 @@ public class Interpreter {
         readIdentifier(input);
         readCharacter(input, '=');
         readExpression(input);
-
 //        readEndOfLine(input);
+
     }
 
     private void readComment(Scanner input) throws APException {
