@@ -166,6 +166,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
         }
         this.goToFirst();
         ListInterface<E> tmp = new List<>();
+
         while (current.next != null) {
             tmp.insert( current.data );
             current = current.next;

@@ -19,7 +19,7 @@ public class Interpreter {
         Set result = readTerm(input);
 
 
-        while( input.hasNext() ){
+        while( input.hasNext("[|\\-+]") ){
             if (Parser.nextCharIs(input, '|')) {
                 Parser.readCharacter(input, '|');
                 result = result.symmDifference( readTerm(input) );
@@ -30,7 +30,7 @@ public class Interpreter {
                 Parser.readCharacter(input, '+');
                 result = result.union( readTerm(input) );
             } else {
-                throw new APException("Expected an additive operator! Found: " + Parser.nextChar(input) );
+                throw new APException("Expected an additive operator! Found: '" + Parser.nextChar(input) + "'");
             }
         }
 
@@ -53,27 +53,24 @@ public class Interpreter {
     // factor = identifier | complex_factor | set ; A factor is an identifier,
     // a complex factor or a set.
     public static Set readFactor(Scanner input) throws APException {
-        System.out.printf("in the readFactor method\n");
-        System.out.println( Parser.nextCharIsLetter(input) );
-        System.out.println( Parser.nextCharIs(input, '{'));
-        System.out.println( Parser.nextCharIs(input, '('));
         Set result;
 
         if (Parser.nextCharIsLetter(input)) {
-            System.out.println("in the readFactor method if 1");
-            result = variables.get( Parser.readIdentifier(input) );
+            Identifier id = Parser.readIdentifier(input);
+            if (variables.containsKey(id)) {
+                result = variables.get(id);
+            } else {
+                throw new APException("No Variable assigned to " + id );
+            }
         } else if ( Parser.nextCharIs(input, '{') ) {
-            System.out.println("in the readFactor method if 2");
             result = readSet(input);
             //complex_factor = '(' expression ')' ; A complex factor is an expression between round brackets.
         } else if ( Parser.nextCharIs(input, '(') ) {
-            System.out.println("in the readFactor method if 3");
             Parser.readCharacter(input, '(');
             result = readExpression(input);
             Parser.readCharacter(input, ')');
         } else {
-            System.out.println("in the readFactor method else");
-            throw new APException("Expected a factor! Found: " + input.nextLine());
+            throw new APException("Expected a factor! Found: '" + input.next() + "'" );
         }
 
         return result;
@@ -102,12 +99,13 @@ public class Interpreter {
     }
 
     public static void main(String[] argv) {
-        try{
-            System.out.println(readSet( new Scanner("{ 5, 99, 22, 44}")).toString() ) ;} catch (APException error) {};
-        /*System.out.println("Set Calculator");
+        //try{
+         //   System.out.println(readSet( new Scanner("{ 5, 99, 22, 44}")).toString() ) ;} catch (APException error) {};
+        System.out.println("Set Calculator");
         System.out.print("Input:\n> ");
 
         Scanner in = new Scanner(System.in);
+        in.useDelimiter("");
         while ( in.hasNext() ) {
             try {
                 Parser.readStatement(in);
@@ -117,9 +115,9 @@ public class Interpreter {
             }
             in.nextLine();
             System.out.printf("> ");
-        } */
+        }
 
-        // in.close(); // in.hasNext() is never false? since scanner never closes while in while loop??
+         in.close(); // in.hasNext() is never false? since scanner never closes while in while loop??
     }
 
 

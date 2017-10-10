@@ -12,7 +12,6 @@ public class Parser {
             input.nextLine();
             readStatement(input);
         }
-        // TODO? readEof(input);
     }
 
     public static void readStatement(Scanner input) throws APException {
@@ -24,7 +23,6 @@ public class Parser {
         } else if (nextCharIs(input, '?')) {
             System.out.println("made it in the if loop");
             readCharacter(input, '?');
-            input.next();
             System.out.println("read the character!");
             System.out.println( Interpreter.readExpression(input) );
         } else {
