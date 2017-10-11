@@ -6,19 +6,26 @@ import java.util.HashMap;
 import java.util.regex.*;
 
 public class Parser {
+    private static final char MULTIPLICATIVE_OPERATOR = '*';
+
+    // Additive operators
+    private static final char SYMMETRICDIFFERENCE_OPERATOR = '|';
+    private static final char UNION_OPERATOR = '+';
+    private static final char COMPLEMENT_OPERATOR = '-';
 
     private static HashMap<Identifier, Set<BigInteger>> variables = new HashMap<>();
 
-    // TODO fix this
-    public static void readProgram(Scanner input) throws APException {
+    // reads a program followed by an <Eof>, <Eof> when hasNextLine() is false
+    private static void readProgram(Scanner input) throws APException {
         readStatement(input);
+
         while( input.hasNextLine() ) {
             input.nextLine();
             readStatement(input);
         }
     }
 
-    public static void readStatement(Scanner input) throws APException {
+    private static void readStatement(Scanner input) throws APException {
         terminateSpaces(input);
 
         if( nextCharIs(input, '/') ) {
@@ -26,6 +33,7 @@ public class Parser {
 
         } else if (nextCharIsLetter(input)) {
             readAssignment(input);
+            //readEol(input);
 
         } else if (nextCharIs(input, '?')) {
             readCharacter(input, '?');
@@ -37,32 +45,24 @@ public class Parser {
         }
     }
 
-    public static void assign(Identifier id, Set<BigInteger> set) throws APException {
-        if (variables.containsKey(id)) {
-            // Does not allow override, maybe we should?
-            throw new APException("A set has already been assigned to " + id.getIdentifierName());
-        }
-        variables.put(id, set);
-    }
-
-    public static Set<BigInteger> readExpression(Scanner input) throws APException {
+    private static Set<BigInteger> readExpression(Scanner input) throws APException {
         terminateSpaces(input);
         Set<BigInteger> result = readTerm(input);
 
 
         while( input.hasNext("[|\\-+]") ){
-            if (nextCharIs(input, '|')) {
-                readCharacter(input, '|');
+            if (nextCharIs(input, SYMMETRICDIFFERENCE_OPERATOR)) {
+                readCharacter(input, SYMMETRICDIFFERENCE_OPERATOR);
                 terminateSpaces(input);
                 result = result.symmDifference( readTerm(input) );
 
-            } else if (nextCharIs(input, '-')) {
-                readCharacter(input, '-');
+            } else if (nextCharIs(input, COMPLEMENT_OPERATOR)) {
+                readCharacter(input, COMPLEMENT_OPERATOR);
                 terminateSpaces(input);
                 result = result.complement( readTerm(input) );
 
-            } else if (nextCharIs(input, '+')) {
-                readCharacter(input, '+');
+            } else if (nextCharIs(input, UNION_OPERATOR)) {
+                readCharacter(input, UNION_OPERATOR);
                 terminateSpaces(input);
                 result = result.union( readTerm(input) );
 
@@ -74,15 +74,38 @@ public class Parser {
         return result;
     }
 
-    // term = factor { multiplicative_operator factor } ; A term is a factor,
-    // followed by 0 or more factors. All factors are separated by a multiplicative-operator.
-    public static Set<BigInteger> readTerm(Scanner input) throws APException {
+    private static void readAssignment(Scanner input) throws APException {
+        Identifier id = readIdentifier(input);
+        terminateSpaces(input);
+
+        readCharacter(input, '=');
+
+        terminateSpaces(input);
+        Set<BigInteger> set = readExpression(input);
+        terminateSpaces(input);
+        readEol(input);
+
+        assign(id, set);
+    }
+
+    private static void assign(Identifier id, Set<BigInteger> set) throws APException {
+        if (variables.containsKey(id)) {
+            // Does not allow override, maybe we should?
+            throw new APException("A set has already been assigned to " + id.getIdentifierName());
+        }
+        variables.put(id, set);
+    }
+
+    // Reads a term consisting of a factor followed by 0 or more factors. All factors are separated by
+    // a MULTIPLICATIVE_OPERATOR, preceded and followed by 0 or more whitespaces.
+    private static Set<BigInteger> readTerm(Scanner input) throws APException {
         terminateSpaces(input);
         Set<BigInteger> result = readFactor(input);
+        terminateSpaces(input);
 
-        while(nextCharIs(input,'*')) {
-            readCharacter(input, '*');
-            terminateSpaces(input);
+        // Recursion condition
+        if ( nextCharIs(input, MULTIPLICATIVE_OPERATOR) ) {
+            readCharacter(input, MULTIPLICATIVE_OPERATOR);
             result = result.intersection( readTerm(input) );
         }
 
@@ -91,7 +114,7 @@ public class Parser {
 
     // factor = identifier | complex_factor | set ; A factor is an identifier,
     // a complex factor or a set.
-    public static Set<BigInteger> readFactor(Scanner input) throws APException {
+    private static Set<BigInteger> readFactor(Scanner input) throws APException {
         terminateSpaces(input);
         Set<BigInteger> result;
 
@@ -127,24 +150,17 @@ public class Parser {
     //A set is a row of natural numbers between accolades.
     //row_natural_numbers = [ natural_number { ',' natural_number } ]
     //A row of natural numbers is empty or a summation of one or more natural numbers separated by commas.
-    public static Set<BigInteger> readSet(Scanner input) throws APException {
+    private static Set<BigInteger> readSet(Scanner input) throws APException {
         readCharacter(input, '{');
         terminateSpaces(input);
 
         if ( nextCharIs(input, '}') ) {
             readCharacter(input, '}');
-            terminateSpaces(input);
-
             return new SetImpl<>();
         }
 
-        StringBuilder val = new StringBuilder("");
-        while(nextCharIsDigit(input)) {
-            val.append( nextChar(input) );
-        }
-
         Set<BigInteger> set = new SetImpl<>();
-        set.add( new BigInteger(val.toString()) );
+        set.add( readBigInteger(input) );
 
         return addValues(input, set);
     }
@@ -152,40 +168,22 @@ public class Parser {
     private static Set<BigInteger> addValues(Scanner input, Set<BigInteger> set) throws APException {
         terminateSpaces(input);
 
+        // Termination condition
         if ( nextCharIs(input, '}') ) {
             readCharacter(input, '}');
             return set;
-        } else {
-            readCharacter(input, ',');
-            terminateSpaces(input);
-            StringBuilder val = new StringBuilder("");
-
-            while(nextCharIsDigit(input)) {
-                val.append( nextChar(input) );
-            }
-
-            set.add( new BigInteger(val.toString()) );
-
-            return addValues(input, set);
         }
+
+        readCharacter(input, ',');
+        terminateSpaces(input);
+
+        set.add( readBigInteger(input) );
+
+        return addValues(input, set);
+
     }
 
-
-    public static void readAssignment(Scanner input) throws APException {
-        Identifier id = readIdentifier(input);
-        terminateSpaces(input);
-
-        readCharacter(input, '=');
-
-        terminateSpaces(input);
-        Set<BigInteger> set = readExpression(input);
-        terminateSpaces(input);
-        readEol(input);
-
-        assign(id, set);
-    }
-
-    public static Identifier readIdentifier(Scanner input) throws APException {
+    private static Identifier readIdentifier(Scanner input) throws APException {
         Identifier result = new IdentifierImpl();
         if (nextCharIsLetter(input)) {
             result.add(nextChar(input));
@@ -201,7 +199,18 @@ public class Parser {
     }
 
 
-    public static void readCharacter(Scanner input, char ch) throws APException {
+
+    private static BigInteger readBigInteger(Scanner input) {
+        StringBuilder val = new StringBuilder();
+
+        while ( nextCharIsDigit(input) ) {
+            val.append( nextChar(input) );
+        }
+
+        return new BigInteger( val.toString() );
+    }
+
+    private static void readCharacter(Scanner input, char ch) throws APException {
         if (!( nextCharIs(input, ch) )) {
             throw new APException("'" + ch + "'" + " was expected! Found '" +nextChar(input) + "'");
         }
@@ -209,75 +218,57 @@ public class Parser {
     }
 
     // checks if the line has ended. If there is more input, throws an APException.
-    public  static void readEol(Scanner input) throws APException {
+    private  static void readEol(Scanner input) throws APException {
         terminateSpaces(input);
-
 
         //if ( input.hasNext() ) {
         //    throw new APException("Expected an <eol>, found: '" + nextChar(input) + "'");
         //}
     }
 
-    // TODO implement this
-    public static BigInteger readBigInteger(Scanner input) {
-       StringBuilder val = new StringBuilder();
-
-       while ( nextCharIsDigit(input) ) {
-           val.append( nextChar(input) );
-       }
-
-       return new BigInteger( val.toString() );
-    }
-
-    public static void terminateSpaces(Scanner input) throws APException {
-        while ( nextCharIs(input, ' ')) {
+    private static void terminateSpaces(Scanner input) throws APException {
+        while ( nextCharIs(input, ' ') ) {
             readCharacter(input, ' ');
         }
     }
 
     // Method to read 1 character.
-    public static char nextChar (Scanner in) {
+    private static char nextChar (Scanner in) {
         return in.next().charAt(0);
     }
 
     // Method to check if the next character to be read when
     // calling nextChar() is equal to the provided character.
-    public static boolean nextCharIs(Scanner in, char c) {
+    private static boolean nextCharIs(Scanner in, char c) {
         return in.hasNext(Pattern.quote(c+""));
     }
 
     // Method to check if the next character to be read when
     // calling nextChar() is a digit.
-    public static boolean nextCharIsDigit (Scanner in) {
+    private static boolean nextCharIsDigit (Scanner in) {
         return in.hasNext("[0-9]");
     }
 
     // Method to check if the next character to be read when
     // calling nextChar() is a letter.
-    public static boolean nextCharIsLetter (Scanner in) {
+    private static boolean nextCharIsLetter (Scanner in) {
         return in.hasNext("[A-Za-z]");
     }
 
 
     public static void main(String[] argv) {
         System.out.println("Set Calculator");
-        System.out.print("Input:\n> ");
-
-        Scanner in = new Scanner(System.in);
-        in.useDelimiter("");
+        Scanner in = new Scanner(System.in).useDelimiter("") ;
 
         while ( in.hasNextLine() ) {
             try {
-                readStatement(in);
+                readStatement( in );
             } catch (APException error) {
-                System.out.println("\u001B[31m" + error + "\u001B[0m");
-                //throw new Error(error);
+                System.out.println("\u001B[31m" + error.getMessage() + "\u001B[0m");
             }
             in.nextLine();
-
-            System.out.printf("> ");
         }
 
-        in.close(); // in.hasNext() is never false? since scanner never closes while in while loop??
+        in.close();
     }
 }
