@@ -2,6 +2,7 @@ import org.junit.*;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -15,7 +16,9 @@ public class InterpreterTest {
 
     @Test
     public void testPrint() throws APException {
-        Interpreter interpreter = new Interpreter();
+        Hashtable<IdentiferImp, SetImp> hashTable = new Hashtable<>();
+
+        Interpreter interpreter = new Interpreter(hashTable);
 
         // Test Regular print statement
         testParse(setInput("? Print"), interpreter);
@@ -36,19 +39,20 @@ public class InterpreterTest {
 
     @Test
     public void testAssignment() throws APException {
-        Interpreter interpreter = new Interpreter();
+        Hashtable<IdentiferImp, SetImp> hashTable = new Hashtable<>();
+        Interpreter interpreter = new Interpreter(hashTable);
 
         // Test Empty Set Assignment
         testParse(setInput("Aap={}"), interpreter);
 
         // Test Set Operation
-        testParse(setInput("Full={1, 2, 3}*{3,4,5}"), interpreter);
+        testParse(setInput("Full={1,2,3}*{3,4,5}"), interpreter);
 
         // Test Whitespace
-        testParse(setInput("Vat = Worm - Xorn - Yeti - Zeven"), interpreter);
+//        testParse(setInput("Vat = Worm - Xorn - Yeti - Zeven"), interpreter);
 
         // Test priorities
-        testParse(setInput("Beer = {1, 2, 3} + {4, 5, 6}*{3, 4  }"), interpreter);
+        testParse(setInput("Beer ={1, 2, 3}+{4, 5, 6}*{3, 4  }"), interpreter);
 
         // Test print statement with set
         testParse(setInput("?{1,3,4,5}"), interpreter);

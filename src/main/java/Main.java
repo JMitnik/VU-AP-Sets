@@ -15,8 +15,7 @@ public class Main {
                 interpreter.readStatement(input);
             }
             catch (APException e) {
-                //todo: print out the error
-                throw new Error("New error", e);
+                System.out.println(e.toString());
             }
 //            interpreter.readEndOfFile(input);
         }

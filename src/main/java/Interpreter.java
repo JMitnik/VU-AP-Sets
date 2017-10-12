@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -27,13 +28,14 @@ public class Interpreter {
     }
 
     private Set readExpression(Scanner input) throws APException {
-        Set result = new SetImp();
-        readTerm(input);
+        Set set = readTerm(input);
 
         while (nextCharIsAdditive(input)) {
-            nextChar(input); //todo: So I read the next character, then what?
+            nextChar(input);
             readTerm(input);
         }
+
+        return set;
     }
 
     private Set readTerm(Scanner input) throws APException {
@@ -41,7 +43,7 @@ public class Interpreter {
 
         while (nextCharIs(input, '*')) {
             nextChar(input);
-            result.intersection(readFactor(input));
+            result = result.intersection(readFactor(input));
         }
 
         return result;
@@ -58,17 +60,24 @@ public class Interpreter {
     //returns Set
     private Set readFactor(Scanner input) throws APException {
         if (nextCharIsLetter(input)) {
-            readIdentifier(input);
-            //todo: checkifexists
-            //todo: hashmap->get(identifier);
+            return findIdentifier(readIdentifier(input));
         } else if (nextCharIs(input, '(')) {
-            readComplexFactor(input);
+            return readComplexFactor(input);
             //todo: return the set out of this
         } else if (nextCharIs(input, '{')) {
-            readSet(input);
-            //todo: return this set
+            return readSet(input);
         } else {
             throw new APException("An improper factor has been recognized");
+        }
+
+        return null;
+    }
+
+    private Set findIdentifier(Identifier identifier) throws APException {
+        if (hashTable.containsKey(identifier)) {
+            return (Set) hashTable.get(identifier);
+        } else {
+            throw new APException("Can't find Identifier");
         }
     }
 
@@ -76,55 +85,61 @@ public class Interpreter {
         Identifier result = new IdentiferImp();
 
         if (nextCharIsLetter(input)) {
-            nextChar(input);
+            result.addChar(nextChar(input));
         } else {
             throw new APException("Identifier not proper syntax");
         }
 
         while (nextCharIsLetter(input) || nextCharIsDigit(input)) {
-            nextChar(input);
+            result.addChar(nextChar(input));
         }
 
         return result;
     }
 
-    private void readComplexFactor(Scanner input) throws APException {
+    private Set readComplexFactor(Scanner input) throws APException {
         readCharacter(input, '(');
-        readExpression(input);
+        Set set = readExpre
         readCharacter(input, ')');
+        return set;
     }
 
-    private void readSet(Scanner input) throws APException {
+    private Set readSet(Scanner input) throws APException {
         readCharacter(input, '{');
-        readRowNaturalNumbers(input);
+        Set<BigInteger> set = readRowNaturalNumbers(input); //todo should I not add the set after all this is over?
         readCharacter(input, '}');
+        return set;
     }
 
-    private void readRowNaturalNumbers(Scanner input) throws APException {
-        if (nextCharIsDigit(input) || !nextCharIs(input, ' ')) {
-            nextChar(input);
+    private Set readRowNaturalNumbers(Scanner input) throws APException {
+        Set<BigInteger> set = new SetImp();
+
+        if (nextCharIsDigit(input)) {
+            set.addEl(BigInteger.valueOf(readNaturalNumber(input)));
         }
 
         while (nextCharIs(input, ',')) {
             readCharacter(input, ',');
-            readNaturalNumber(input);
+            set.addEl(BigInteger.valueOf(readNaturalNumber(input)));
         }
+
+        return set;
     }
 
-    private void readNaturalNumber(Scanner input) throws APException {
+    private Integer readNaturalNumber(Scanner input) throws APException {
         if (nextCharIsDigit(input)) {
-            nextChar(input);
+            return Character.getNumericValue(nextChar(input));
         } else {
             throw new APException("Non-natural number spotted in Set!");
         }
     }
 
     private void readAssignment(Scanner input) throws APException {
-        readIdentifier(input);
+        Identifier identifier = readIdentifier(input);
         readCharacter(input, '=');
-        readExpression(input);
+        Set set = readExpression(input);
 //        readEndOfLine(input);
-
+        this.hashTable.put(identifier, set);
     }
 
     private void readComment(Scanner input) throws APException {
