@@ -50,6 +50,8 @@ public class Interpreter {
     }
 
     private void readCharacter(Scanner input, char c) throws APException {
+        ignoreWhiteSpace(input);
+
         if (!nextCharIs(input, c)) {
             throw new APException("The character is not proper");
         }
@@ -57,7 +59,6 @@ public class Interpreter {
         nextChar(input);
     }
 
-    //returns Set
     private Set readFactor(Scanner input) throws APException {
         if (nextCharIsLetter(input)) {
             return findIdentifier(readIdentifier(input));
@@ -158,23 +159,33 @@ public class Interpreter {
 
     }
 
-    private char nextChar (Scanner in) {
+    private char nextChar (Scanner in) throws APException {
         return in.next().charAt(0);
     }
 
-    private boolean nextCharIs(Scanner in, char c) {
+    private boolean nextCharIs(Scanner in, char c) throws APException {
+        ignoreWhiteSpace(in);
         return in.hasNext(Pattern.quote(c+""));
     }
 
-    private boolean nextCharIsDigit (Scanner in) {
+    private boolean nextCharIsDigit (Scanner in) throws APException {
+        ignoreWhiteSpace(in);
         return in.hasNext("[0-9]");
     }
 
-    private boolean nextCharIsAdditive (Scanner in) {
+    private void ignoreWhiteSpace (Scanner in) throws APException {
+        while (in.hasNext("\\s")) {
+            nextChar(in);
+        }
+    }
+
+    private boolean nextCharIsAdditive (Scanner in) throws APException {
+        ignoreWhiteSpace(in);
         return in.hasNext("[+|-]");
     }
 
-    private boolean nextCharIsLetter (Scanner in) {
+    private boolean nextCharIsLetter (Scanner in) throws APException {
+        ignoreWhiteSpace(in);
         return in.hasNext("[a-zA-Z]");
     }
 }

@@ -46,13 +46,13 @@ public class InterpreterTest {
         testParse(setInput("Aap={}"), interpreter);
 
         // Test Set Operation
-        testParse(setInput("Full={1,2,3}*{3,4,5}"), interpreter);
+        testParse(setInput("Full={  1  , 2, 3 }*{3 ,  4  ,  5 }"), interpreter);
 
         // Test Whitespace
 //        testParse(setInput("Vat = Worm - Xorn - Yeti - Zeven"), interpreter);
 
         // Test priorities
-        testParse(setInput("Beer ={1, 2, 3}+{4, 5, 6}*{3, 4  }"), interpreter);
+        testParse(setInput("Beer ={1, 2, 3, 4}*{4, 5, 6}*{3, 4  }"), interpreter);
 
         // Test print statement with set
         testParse(setInput("?{1,3,4,5}"), interpreter);
