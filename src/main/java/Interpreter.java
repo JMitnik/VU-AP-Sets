@@ -69,8 +69,6 @@ public class Interpreter {
         } else {
             throw new APException("An improper factor has been recognized");
         }
-
-        return null;
     }
 
     private Set findIdentifier(Identifier identifier) throws APException {
@@ -99,7 +97,7 @@ public class Interpreter {
 
     private Set readComplexFactor(Scanner input) throws APException {
         readCharacter(input, '(');
-        Set set = readExpre
+        Set set = readExpression(input);
         readCharacter(input, ')');
         return set;
     }
