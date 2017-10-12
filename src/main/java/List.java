@@ -158,7 +158,8 @@ public class List<E extends Comparable> implements ListInterface<E>{
             return false;
         }
 
-        return false;
+        goToOrderIndex(d);
+        return current.data.equals(d);
     }
 
     @Override
