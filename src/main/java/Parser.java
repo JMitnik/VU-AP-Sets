@@ -1,9 +1,10 @@
 
-//import java.util.regex.Pattern;
+import java.util.regex.Pattern;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.Scanner;
 import java.util.HashMap;
-import java.util.regex.*;
 
 public class Parser {
     private static final char MULTIPLICATIVE_OPERATOR = '*';
@@ -15,36 +16,53 @@ public class Parser {
 
     private static HashMap<Identifier, Set<BigInteger>> variables = new HashMap<>();
 
-    // reads a program followed by an <Eof>, <Eof> when hasNextLine() is false
-    private static void readProgram(Scanner input) throws APException {
-        readStatement(input);
+    // Removes all stored variables
+    private static void init() {
+        variables.clear();
+    }
+
+    // Reads a program followed by an <Eof>, <Eof> when hasNextLine() is false
+    private static void readProgram(Scanner input) {
+        try {readStatement(input);}
+        catch (APException error) {
+            System.out.println("ERROR: " + error.getMessage());
+        }
 
         while( input.hasNextLine() ) {
             input.nextLine();
-            readStatement(input);
+            try {readStatement(input);}
+            catch (APException error) {
+                System.out.println("ERROR: " + error.getMessage());
+            }
         }
     }
 
+    // Reads a Statement and performs an action accordingly. Empty statements ("") are ignored
     private static void readStatement(Scanner input) throws APException {
-        terminateSpaces(input);
+        //Ignore completely blank lines
+        if ( !input.hasNext(".") ) {
+            return;
+        }
 
+        // Could introduce terminateSpaces(input); here but think we do not want this.
         if( nextCharIs(input, '/') ) {
-            readCharacter(input, '/');
+            // ignore line
 
         } else if (nextCharIsLetter(input)) {
             readAssignment(input);
-            //readEol(input);
+            readEol(input);
 
         } else if (nextCharIs(input, '?')) {
             readCharacter(input, '?');
             System.out.println( readExpression(input) );
-            //readEol(input);
+            readEol(input);
 
         } else {
             throw new APException("'/', '?', or a character (\"[a-zA-Z]\") was expected at the beginning of a statement!");
         }
     }
 
+    // Reads an Expression and returns the resulting set.
     private static Set<BigInteger> readExpression(Scanner input) throws APException {
         terminateSpaces(input);
         Set<BigInteger> result = readTerm(input);
@@ -74,83 +92,80 @@ public class Parser {
         return result;
     }
 
+    // Reads an Assignment statement and assigns the Identifier to the set that is the result of the Expression.
     private static void readAssignment(Scanner input) throws APException {
         Identifier id = readIdentifier(input);
-        terminateSpaces(input);
 
+        terminateSpaces(input);
         readCharacter(input, '=');
-
         terminateSpaces(input);
+
         Set<BigInteger> set = readExpression(input);
         terminateSpaces(input);
+
         readEol(input);
 
         assign(id, set);
     }
 
+    // Assigns a set to an Identifier.
     private static void assign(Identifier id, Set<BigInteger> set) throws APException {
         if (variables.containsKey(id)) {
-            // Does not allow override, maybe we should?
             throw new APException("A set has already been assigned to " + id.getIdentifierName());
         }
         variables.put(id, set);
     }
 
     // Reads a term consisting of a factor followed by 0 or more factors. All factors are separated by
-    // a MULTIPLICATIVE_OPERATOR, preceded and followed by 0 or more whitespaces.
+    // a MULTIPLICATIVE_OPERATOR.
     private static Set<BigInteger> readTerm(Scanner input) throws APException {
-        terminateSpaces(input);
         Set<BigInteger> result = readFactor(input);
-        terminateSpaces(input);
 
-        // Recursion condition
-        if ( nextCharIs(input, MULTIPLICATIVE_OPERATOR) ) {
+        while ( nextCharIs(input, MULTIPLICATIVE_OPERATOR) ) {
             readCharacter(input, MULTIPLICATIVE_OPERATOR);
-            result = result.intersection( readTerm(input) );
+            result = result.intersection( readFactor(input) );
         }
 
         return result;
     }
 
-    // factor = identifier | complex_factor | set ; A factor is an identifier,
-    // a complex factor or a set.
+    // Reads a factor, and returns the resulting Set.
+    // A factor is an identifier, a complex factor or a set.
     private static Set<BigInteger> readFactor(Scanner input) throws APException {
         terminateSpaces(input);
         Set<BigInteger> result;
 
-        if ( nextCharIsLetter(input) ) {
+        if ( nextCharIsLetter(input) ) { // factor is an identifier
             Identifier id = readIdentifier(input);
+            result = getSet(id);
 
-            if (variables.containsKey(id)) {
-                result = variables.get(id);
-            } else {
-                throw new APException("No variable assigned to '" + id.getIdentifierName() + "'!");
-            }
-
-        } else if ( nextCharIs(input, '{') ) {
+        } else if ( nextCharIs(input, '{') ) { // factor is a set
             result = readSet(input);
 
-        } else if ( nextCharIs(input, '(') ) {
+        } else if ( nextCharIs(input, '(') ) { // factor is a complex factor
             readCharacter(input, '(');
-            terminateSpaces(input);
-
             result = readExpression(input);
-
-            terminateSpaces(input);
             readCharacter(input, ')');
 
         } else {
-            throw new APException("Expected a factor! Found: '" + input.next() + "'" );
+            throw new APException("Expected a factor!" );
         }
 
         return result;
     }
 
-    //set = '{' row_natural_numbers '}'
-    //A set is a row of natural numbers between accolades.
-    //row_natural_numbers = [ natural_number { ',' natural_number } ]
-    //A row of natural numbers is empty or a summation of one or more natural numbers separated by commas.
+    // Retrieves a set assigned to an Identifier
+    private static Set<BigInteger> getSet(Identifier id) throws APException {
+        if (variables.containsKey(id)) {
+            return variables.get(id);
+        } else {
+            throw new APException("No set assigned to '" + id.getIdentifierName() + "'!");
+        }
+    }
+
+    // Takes a Scanner, reads the set that is in it and returns a set.
     private static Set<BigInteger> readSet(Scanner input) throws APException {
+        Set<BigInteger> set = new SetImpl<>();
         readCharacter(input, '{');
         terminateSpaces(input);
 
@@ -159,48 +174,38 @@ public class Parser {
             return new SetImpl<>();
         }
 
-        Set<BigInteger> set = new SetImpl<>();
         set.add( readBigInteger(input) );
-
-        return addValues(input, set);
-    }
-
-    private static Set<BigInteger> addValues(Scanner input, Set<BigInteger> set) throws APException {
         terminateSpaces(input);
 
-        // Termination condition
-        if ( nextCharIs(input, '}') ) {
-            readCharacter(input, '}');
-            return set;
+        while( nextCharIs(input, ',') ) {
+            readCharacter(input, ',');
+            terminateSpaces(input);
+            set.add( readBigInteger(input) );
+            terminateSpaces(input);
         }
 
-        readCharacter(input, ',');
-        terminateSpaces(input);
+        readCharacter(input, '}');
 
-        set.add( readBigInteger(input) );
-
-        return addValues(input, set);
-
+        return set;
     }
 
+    // Reads an identifier.
     private static Identifier readIdentifier(Scanner input) throws APException {
         Identifier result = new IdentifierImpl();
-        if (nextCharIsLetter(input)) {
-            result.add(nextChar(input));
-        } else {
-            throw new APException("Identifier has to start with a letter, found: " + nextChar(input));
-        }
 
         while ( nextCharIsLetter(input) || nextCharIsDigit(input) ) {
-            result.add(nextChar(input));
+            result.add( nextChar(input) );
         }
 
         return result;
     }
 
+    // The function converts a BigInteger given
+    private static BigInteger readBigInteger(Scanner input) throws APException {
+        if ( !nextCharIsDigit(input) ) {
+            throw new APException("Expected an integer! Found '" + input.next() + "'");
+        }
 
-
-    private static BigInteger readBigInteger(Scanner input) {
         StringBuilder val = new StringBuilder();
 
         while ( nextCharIsDigit(input) ) {
@@ -210,25 +215,27 @@ public class Parser {
         return new BigInteger( val.toString() );
     }
 
+    // Reads next character if it equals thee given character
     private static void readCharacter(Scanner input, char ch) throws APException {
         if (!( nextCharIs(input, ch) )) {
-            throw new APException("'" + ch + "'" + " was expected! Found '" +nextChar(input) + "'");
+            throw new APException("'" + ch + "'" + " was expected!");
         }
         nextChar(input);
     }
 
-    // checks if the line has ended. If there is more input, throws an APException.
-    private  static void readEol(Scanner input) throws APException {
-        terminateSpaces(input);
-
-        //if ( input.hasNext() ) {
-        //    throw new APException("Expected an <eol>, found: '" + nextChar(input) + "'");
-        //}
-    }
-
+    // Removes all subsequent whitespace
     private static void terminateSpaces(Scanner input) throws APException {
         while ( nextCharIs(input, ' ') ) {
             readCharacter(input, ' ');
+        }
+    }
+
+    // Checks to see if there are any tokens left in the line
+    private static void readEol(Scanner in) throws APException {
+        terminateSpaces(in);
+        if ( in.findInLine("") != null ){
+            throw new APException("An <EoL> was expected");
+            //throw new APException("No <Eol>! Found '" + in.next() + "'");
         }
     }
 
@@ -255,20 +262,32 @@ public class Parser {
         return in.hasNext("[A-Za-z]");
     }
 
+    // First reads a program from a file (from filepath), then processes user input.
+    public static void main(String[] args) throws FileNotFoundException {
+        File text = new File("C:\\Users\\wille\\Documents\\Set.txt");
+        Scanner pr = new Scanner( text ).useDelimiter("");
+        readProgram(pr);
+        pr.close();
 
-    public static void main(String[] argv) {
-        System.out.println("Set Calculator");
+        String ANSI_RED = "\u001B[31m";
+        String ANSI_YELLOW = "\u001B[32m";
+        String ANSI_RESET = "\u001B[0m";
+
         Scanner in = new Scanner(System.in).useDelimiter("") ;
+        System.out.printf( ANSI_YELLOW + "\nSet Calculator" + ANSI_RESET + "\n> ");
 
+        init();
         while ( in.hasNextLine() ) {
             try {
                 readStatement( in );
             } catch (APException error) {
-                System.out.println("\u001B[31m" + error.getMessage() + "\u001B[0m");
+                System.out.println(ANSI_RED + error.getMessage() + ANSI_RESET);
             }
+            System.out.printf("> ");
             in.nextLine();
         }
 
         in.close();
     }
+
 }
