@@ -24,7 +24,25 @@ public class Interpreter {
 
     private void readPrintStatement(Scanner input) throws APException {
         readCharacter(input, '?');
-        readExpression(input);
+        Set<BigInteger> set = readExpression(input);
+        printSet(set);
+    }
+
+    private void printSet(Set<BigInteger> set) {
+        System.out.printf("{");
+        printElements(set);
+        System.out.printf("}");
+    }
+
+    private void printElements(Set<BigInteger> set) {
+        if (set.cardinality() != 0) {
+            System.out.print(set.remove());
+        }
+
+        while (!(set.cardinality() == 0)) {
+            System.out.print(',');
+            System.out.print(set.remove());
+        }
     }
 
     private Set readExpression(Scanner input) throws APException {
@@ -148,7 +166,7 @@ public class Interpreter {
             input.next();
         }
 
-//        readEndOfLine(input);
+        readEndOfLine(input);
     }
 
     private void readEndOfLine(Scanner input) throws APException {
