@@ -137,7 +137,7 @@ public class Interpreter {
         Identifier identifier = readIdentifier(input);
         readCharacter(input, '=');
         Set set = readExpression(input);
-//        readEndOfLine(input);
+        readEndOfLine(input);
         this.hashTable.put(identifier, set);
     }
 
@@ -151,8 +151,10 @@ public class Interpreter {
 //        readEndOfLine(input);
     }
 
-    private void readEndOfLine(Scanner input) {
-
+    private void readEndOfLine(Scanner input) throws APException {
+        if (input.hasNext()) {
+            throw new APException("End of line expected!");
+        }
     }
 
     private void readEndOfFile(Scanner input) throws APException {
