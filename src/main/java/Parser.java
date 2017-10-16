@@ -80,7 +80,7 @@ public class Parser {
 
     // Reads a Statement and performs an action accordingly. Empty statements ("") are ignored
     private void readStatement(Scanner input) throws APException {
-        // Could introduce terminateSpaces(input); here but think we do not want this.
+        terminateSpaces(input);
         if( nextCharIs(input, COMMENT_CHAR ) || !input.hasNext("."))  {
             // ignore completely empty lines and lines preceded by COMMENT.
 
@@ -152,9 +152,9 @@ public class Parser {
 
     // Assigns a set to an Identifier.
     private void assign(Identifier id, Set<BigInteger> set) throws APException {
-        if (variables.containsKey(id)) {
-            throw new APException("A set has already been assigned to " + id.getIdentifierName());
-        }
+        //if (variables.containsKey(id)) {
+        //    throw new APException("A set has already been assigned to " + id.getIdentifierName());
+        //}
         variables.put(id, set);
     }
 
@@ -162,10 +162,13 @@ public class Parser {
     // All factors are separated by a MULTIPLICATIVE_OPERATOR.
     private Set<BigInteger> readTerm(Scanner input) throws APException {
         Set<BigInteger> result = readFactor(input);
+        terminateSpaces(input);
 
         while ( nextCharIs(input, MULTIPLICATIVE_OPERATOR) ) {
             readCharacter(input, MULTIPLICATIVE_OPERATOR);
+            terminateSpaces(input);
             result = result.intersection( readFactor(input) );
+            terminateSpaces(input);
         }
 
         return result;
@@ -174,12 +177,12 @@ public class Parser {
     // Reads a factor, and returns the resulting Set.
     // A factor is an identifier, a complex factor or a set.
     private Set<BigInteger> readFactor(Scanner input) throws APException {
-        terminateSpaces(input);
         Set<BigInteger> result;
 
         if ( nextCharIsLetter(input) ) { // factor is an identifier
             Identifier id = readIdentifier(input);
             result = retrieveSet(id);
+            terminateSpaces(input);
 
         } else if ( nextCharIs(input, '{') ) { // factor is a set
             result = readSet(input);
@@ -272,8 +275,8 @@ public class Parser {
     private void readEol(Scanner in) throws APException {
         terminateSpaces(in);
         if ( in.findInLine("") != null ){
-            throw new APException("An <EoL> was expected");
-            //throw new APException("No <Eol>! Found '" + in.next() + "'");
+            //throw new APException("An <EoL> was expected");
+            throw new APException("No <Eol>! Found '" + in.next() + "'");
         }
     }
 
