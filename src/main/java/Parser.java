@@ -86,7 +86,7 @@ public class Parser {
     // Reads a Statement and performs an action accordingly. Empty statements ("") are ignored
     private void readStatement(Scanner input) throws APException {
         terminateSpaces(input);
-        if( nextCharIs(input, COMMENT_CHAR ) || !input.hasNext("."))  {
+        if( nextCharIs(input, COMMENT_CHAR ) )  {
             // ignore completely empty lines and lines preceded by COMMENT.
 
         } else if (nextCharIsLetter(input)) { // Identifier
@@ -214,20 +214,26 @@ public class Parser {
         }
     }
 
-    // Takes a Scanner, reads the set that is in it and returns a set.
+    // Takes a Scanner, reads the set that is in it and returns it.
     private Set<BigInteger> readSet(Scanner input) throws APException {
         Set<BigInteger> set = new SetImpl<>();
         readCharacter(input, '{');
         terminateSpaces(input);
 
-        while (!nextCharIs(input, '}')) {
-            set.add(readBigInteger(input));
-            terminateSpaces(input);
-            if ( nextCharIs(input, '}') ) {
-                break;
-            }
+        if (nextCharIs(input, '}')) {
+            readCharacter(input, '}');
+            return set;
+        }
+
+        set.add(readBigInteger(input));
+        terminateSpaces(input);
+
+        while (nextCharIs(input, ',')) {
             readCharacter(input, ',');
             terminateSpaces(input);
+            set.add(readBigInteger(input));
+            terminateSpaces(input);
+
         }
 
         readCharacter(input, '}');
@@ -248,11 +254,13 @@ public class Parser {
 
     // The function converts a BigInteger given
     private BigInteger readBigInteger(Scanner input) throws APException {
+        StringBuilder val = new StringBuilder();
+
         if ( !nextCharIsDigit(input) ) {
             throw new APException("Expected an integer!");
+        } else if (nextCharIs(input, '0')) {
+            return BigInteger.valueOf(0);
         }
-
-        StringBuilder val = new StringBuilder();
 
         while ( nextCharIsDigit(input) ) {
             val.append( nextChar(input) );

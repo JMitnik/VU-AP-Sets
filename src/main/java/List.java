@@ -197,6 +197,20 @@ public class List<E extends Comparable> implements ListInterface<E>{
     @Override
     public String toString() {
         if (this.isEmpty()) {
+            return "";
+        }
+        this.goToFirst();
+        StringBuilder str = new StringBuilder("");
+
+        while (current.next != null) {
+            str = str.append(current.data).append(" ");
+            current = current.next;
+        }
+
+        str.append(current.data);
+        return str.toString();
+        /*
+        if (this.isEmpty()) {
             return "{}";
 
         } else {
@@ -211,6 +225,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
             str.append(current.data).append(" }");
             return str.toString();
         }
+        */
     }
 
 
