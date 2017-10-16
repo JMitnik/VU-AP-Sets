@@ -26,8 +26,12 @@ public class IdentiferImp implements Identifier {
         return getIdentifier().hashCode();
     }
 
-    //todo:
-//    public boolean equals() {
-//        return getIdentifier().equals();
-//    }
+    public boolean equals(Object ob) {
+        if (ob.getClass() == this.getClass() ) {
+            Identifier id = (Identifier) ob;
+            return this.getIdentifier().equals( id.getIdentifier() );
+        }
+
+        return false;
+    }
 }

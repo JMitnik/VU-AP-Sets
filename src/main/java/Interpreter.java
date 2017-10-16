@@ -1,16 +1,34 @@
 import java.math.BigInteger;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Interpreter {
-    private Hashtable hashTable;
+    private HashMap<Identifier, Set> hashMap;
 
-    Interpreter(Hashtable hashTable) {
-        this.hashTable = hashTable;
+    Interpreter() {
+        this.hashMap = new HashMap<>();
     }
+
+    void readFile(Scanner input) {
+        while (input.hasNextLine()) {
+            readLine(new Scanner(input.nextLine()).useDelimiter(""));
+        }
+    }
+
+    private void readLine(Scanner input) {
+        try {
+            readStatement(input);
+        }
+        catch (APException e) {
+            System.out.println(e.toString());
+        }
+    }
+
     //todo: Insert whitespace ignorer in 'right' places
-    public void readStatement(Scanner input) throws APException {
+    private void readStatement(Scanner input) throws APException {
+        ignoreWhiteSpace(input);
+
         if (nextCharIs(input, '?')) {
             readPrintStatement(input);
         } else if (nextCharIsLetter(input)) {
@@ -24,44 +42,74 @@ public class Interpreter {
 
     private void readPrintStatement(Scanner input) throws APException {
         readCharacter(input, '?');
+        ignoreWhiteSpace(input);
         Set<BigInteger> set = readExpression(input);
+        readEndOfLine(input);
         printSet(set);
     }
 
     private void printSet(Set<BigInteger> set) {
-        System.out.printf("{");
         printElements(set);
-        System.out.printf("}");
     }
 
     private void printElements(Set<BigInteger> set) {
-        if (set.cardinality() != 0) {
-            System.out.print(set.remove());
+        Set<BigInteger> copySet = set.copy();
+        if (copySet.cardinality() != 0) {
+            System.out.printf("%s", copySet.remove().toString());
         }
 
-        while (!(set.cardinality() == 0)) {
-            System.out.print(',');
-            System.out.print(set.remove());
+        while (!(copySet.cardinality() == 0)) {
+            System.out.print(' ');
+            System.out.printf("%s", copySet.remove().toString());
         }
+
+        System.out.printf("\n");
     }
 
     private Set readExpression(Scanner input) throws APException {
         Set set = readTerm(input);
+        ignoreWhiteSpace(input);
 
+        //todo: Parse this properly
         while (nextCharIsAdditive(input)) {
-            nextChar(input);
-            readTerm(input);
+            if (operatorIsUnion(input)) {
+                nextChar(input);
+                set = set.union(readTerm(input));
+            } else if (operatorIsSymmDifference(input)) {
+                nextChar(input);
+                set = set.symmDifference(readTerm(input));
+            } else if (operatorIsComplement(input)) {
+                nextChar(input);
+                set = set.complement(readTerm(input));
+            } else {
+                throw new APException("Operator is unknown");
+            }
+            ignoreWhiteSpace(input);
         }
 
         return set;
     }
 
+    private boolean operatorIsUnion(Scanner input) throws APException {
+        return nextCharIs(input, '+');
+    }
+
+    private boolean operatorIsSymmDifference(Scanner input) throws APException {
+        return nextCharIs(input, '|');
+    }
+
+    private boolean operatorIsComplement(Scanner input) throws APException {
+        return nextCharIs(input, '-');
+    }
+
     private Set readTerm(Scanner input) throws APException {
         Set result = readFactor(input);
+        ignoreWhiteSpace(input);
 
         while (nextCharIs(input, '*')) {
             nextChar(input);
             result = result.intersection(readFactor(input));
+            ignoreWhiteSpace(input);
         }
 
         return result;
@@ -78,6 +126,8 @@ public class Interpreter {
     }
 
     private Set readFactor(Scanner input) throws APException {
+        ignoreWhiteSpace(input);
+
         if (nextCharIsLetter(input)) {
             return findIdentifier(readIdentifier(input));
         } else if (nextCharIs(input, '(')) {
@@ -91,10 +141,10 @@ public class Interpreter {
     }
 
     private Set findIdentifier(Identifier identifier) throws APException {
-        if (hashTable.containsKey(identifier)) {
-            return (Set) hashTable.get(identifier);
+        if (hashMap.containsKey(identifier)) {
+            return (Set) hashMap.get(identifier);
         } else {
-            throw new APException("Can't find Identifier");
+            throw new APException("Can't find identifier");
         }
     }
 
@@ -115,6 +165,7 @@ public class Interpreter {
     }
 
     private Set readComplexFactor(Scanner input) throws APException {
+        ignoreWhiteSpace(input);
         readCharacter(input, '(');
         Set set = readExpression(input);
         readCharacter(input, ')');
@@ -122,32 +173,64 @@ public class Interpreter {
     }
 
     private Set readSet(Scanner input) throws APException {
+        ignoreWhiteSpace(input);
         readCharacter(input, '{');
-        Set<BigInteger> set = readRowNaturalNumbers(input); //todo should I not add the set after all this is over?
+        Set<BigInteger> set = readRowNaturalNumbers(input);
         readCharacter(input, '}');
         return set;
     }
 
     private Set readRowNaturalNumbers(Scanner input) throws APException {
         Set<BigInteger> set = new SetImp();
+        ignoreWhiteSpace(input);
 
         if (nextCharIsDigit(input)) {
-            set.addEl(BigInteger.valueOf(readNaturalNumber(input)));
+            set.addEl(readNaturalNumber(input));
+        }
+
+        ignoreWhiteSpace(input);
+
+        if (nextCharIs(input, ',')) {
+            checkFirstElement(set);
         }
 
         while (nextCharIs(input, ',')) {
             readCharacter(input, ',');
-            set.addEl(BigInteger.valueOf(readNaturalNumber(input)));
+            ignoreWhiteSpace(input);
+            set.addEl(readNaturalNumber(input));
+            ignoreWhiteSpace(input);
         }
 
         return set;
     }
 
-    private Integer readNaturalNumber(Scanner input) throws APException {
-        if (nextCharIsDigit(input)) {
-            return Character.getNumericValue(nextChar(input));
+    private void checkFirstElement(Set<BigInteger> set) throws APException {
+        if (set.cardinality() == 0) {
+            throw new APException("First element of set is missing!");
+        }
+    }
+
+    private BigInteger readNaturalNumber(Scanner input) throws APException {
+        StringBuffer result = new StringBuffer();
+
+        if (!nextCharIsDigit(input)) {
+            throw new APException("Non-digit spotted!");
         } else {
-            throw new APException("Non-natural number spotted in Set!");
+            result.append(nextChar(input));
+        }
+
+        checkZeroPrefix(input, result.toString());
+
+        while (nextCharIsDigit(input)) {
+            result.append(nextChar(input));
+        }
+
+        return new BigInteger(result.toString());
+    }
+
+    private void checkZeroPrefix(Scanner input, String s) throws APException {
+        if (s.equals("0") && nextCharIsDigit(input)) {
+            throw new APException("Missing curly brackets: no 00 allowed!");
         }
     }
 
@@ -156,7 +239,7 @@ public class Interpreter {
         readCharacter(input, '=');
         Set set = readExpression(input);
         readEndOfLine(input);
-        this.hashTable.put(identifier, set);
+        this.hashMap.put(identifier, set);
     }
 
     private void readComment(Scanner input) throws APException {
@@ -175,21 +258,15 @@ public class Interpreter {
         }
     }
 
-    private void readEndOfFile(Scanner input) throws APException {
-
-    }
-
     private char nextChar (Scanner in) throws APException {
         return in.next().charAt(0);
     }
 
     private boolean nextCharIs(Scanner in, char c) throws APException {
-        ignoreWhiteSpace(in);
         return in.hasNext(Pattern.quote(c+""));
     }
 
     private boolean nextCharIsDigit (Scanner in) throws APException {
-        ignoreWhiteSpace(in);
         return in.hasNext("[0-9]");
     }
 
@@ -200,12 +277,10 @@ public class Interpreter {
     }
 
     private boolean nextCharIsAdditive (Scanner in) throws APException {
-        ignoreWhiteSpace(in);
         return in.hasNext("[+|-]");
     }
 
     private boolean nextCharIsLetter (Scanner in) throws APException {
-        ignoreWhiteSpace(in);
         return in.hasNext("[a-zA-Z]");
     }
 }

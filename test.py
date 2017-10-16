@@ -40,7 +40,7 @@ def has_colours(stream):
 parser = argparse.ArgumentParser(description='Automatic tester for Advanced ' +
                                  'Programming assignment 2, NoVA edition')
 parser.add_argument('jar', action='store', nargs='?',
-                    default='build/libs/AP2-1.0.jar', type=str,
+                    default='build/libs/AP-Sets-1.0-SNAPSHOTS.jar', type=str,
                     help="location of jar to execute")
 parser.add_argument('-v', '--verbose', action='count', default=0,
                     help="output more details of the tests executed")

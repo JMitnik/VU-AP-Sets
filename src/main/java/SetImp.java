@@ -77,10 +77,10 @@ public class SetImp<E extends Comparable> implements Set<E>{
         Set<E> workingSetLhs = this.copy();
         Set<E> workingSetRhs = set.copy();
 
-        while (workingSetRhs.cardinality() != 0) {
-            E el = workingSetRhs.remove();
+        while (workingSetLhs.cardinality() != 0) {
+            E el = workingSetLhs.remove();
 
-            if (!workingSetLhs.find(el)) {
+            if (!workingSetRhs.find(el)) {
                 result.addEl(el);
             }
         }
