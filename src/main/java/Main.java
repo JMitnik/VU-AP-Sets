@@ -1,15 +1,10 @@
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 
 public class Main {
 
-    private void start() {
-        // Create a scanner on System.in
-        Scanner input = new Scanner(System.in);
-    }
-
-    public static void main(String[] argv) {
-        new Main().start();
+    public static void main(String[] args) {
+        new Parser( "C:\\Users\\wille\\Documents\\Set.txt") ;
+        new Parser( System.in );
     }
 }

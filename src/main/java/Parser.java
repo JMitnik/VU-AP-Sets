@@ -56,10 +56,15 @@ public class Parser {
         in.close();
     }
 
-    public Parser( File sc ) throws IOException {
-        Scanner pr = new Scanner( sc ).useDelimiter("");
-        readProgram(pr);
-        pr.close();
+    public Parser( String path ) {
+        try {
+            Scanner pr = new Scanner( new File( path ) ).useDelimiter("");
+            readProgram(pr);
+            pr.close();
+        } catch (IOException error) {
+            System.out.print(error.getMessage());
+        }
+
     }
 
     // Reads a program followed by an <Eof>, <Eof> when hasNextLine() is false
@@ -95,8 +100,8 @@ public class Parser {
             System.out.println( set );
 
         } else {
-            throw new APException("'" + COMMENT_CHAR + "', '" + PRINT_STATEMENT_CHAR
-                    + "', or a character (\"[a-zA-Z]\") was expected at the beginning of a statement!");
+            throw new APException("'" + COMMENT_CHAR + "', '" + PRINT_STATEMENT_CHAR +
+                    "', or a character was expected at the beginning of a statement!");
         }
     }
 
@@ -126,7 +131,7 @@ public class Parser {
                 terminateSpaces(input);
 
             } else {
-                throw new APException("Expected an additive operator! Found: '" + nextChar(input) + "'");
+                throw new APException("Expected an additive operator!");
             }
         }
 
@@ -304,8 +309,7 @@ public class Parser {
     }
 
     public static void main(String[] args) throws IOException {
-        new Parser( new File("C:\\Users\\wille\\Documents\\Set.txt") );
-        new Parser( System.in );
+
     }
 
 }
