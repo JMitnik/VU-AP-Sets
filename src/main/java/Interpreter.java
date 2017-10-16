@@ -230,7 +230,7 @@ public class Interpreter {
 
     private void checkZeroPrefix(Scanner input, String s) throws APException {
         if (s.equals("0") && nextCharIsDigit(input)) {
-            throw new APException("Missing curly brackets: no 00 allowed!");
+            throw new APException("Missing curly brackets: you can't prefix 0 to another number!");
         }
     }
 
