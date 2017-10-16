@@ -1,11 +1,9 @@
-import java.math.BigInteger;
 public class SetImpl<E extends  Comparable> implements Set<E> {
     // maybe extend Set with the List class
     // class SetImpl<E> extends List<> implements Set<E> {
     private List<E> list = new List<>();
 
     public SetImpl( List<E> list ) {
-        this.list = new List<>();
         this.list = list;
     }
 
@@ -41,8 +39,9 @@ public class SetImpl<E extends  Comparable> implements Set<E> {
         return this.list;
     }
 
+    // TODO why doesnt ListInterface work??
     public Set<E> copy() {
-        return new SetImpl<>(this.list);
+        return new SetImpl<>( (List<E>) this.list.copy() );
     }
 
     public String toString() {
@@ -100,7 +99,7 @@ public class SetImpl<E extends  Comparable> implements Set<E> {
 
         } else {
             Set<E> complement = new SetImpl<>();
-            List<E> tlist = this.list;
+            ListInterface<E> tlist = this.list.copy();
             tlist.goToFirst();
 
             while (tlist.hasNext()) {

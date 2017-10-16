@@ -152,7 +152,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
         return true;
     }
 
-    public Boolean hasNext() {
+    public boolean hasNext() {
         return current.next != null;
     }
 
