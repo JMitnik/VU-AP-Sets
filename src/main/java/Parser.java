@@ -259,6 +259,7 @@ public class Parser {
         if ( !nextCharIsDigit(input) ) {
             throw new APException("Expected an integer!");
         } else if (nextCharIs(input, '0')) {
+            readCharacter(input, '0');
             return BigInteger.valueOf(0);
         }
 
@@ -272,7 +273,7 @@ public class Parser {
     // Reads next character if it equals thee given character
     private void readCharacter(Scanner input, char ch) throws APException {
         if (!( nextCharIs(input, ch) )) {
-            throw new APException("'" + ch + "'" + " was expected!");
+            throw new APException("'" + ch + "'" + " was expected!" );
         }
         nextChar(input);
     }
@@ -316,7 +317,7 @@ public class Parser {
         return in.hasNext("[A-Za-z]");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
     }
 

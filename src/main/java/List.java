@@ -209,7 +209,7 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
         str.append(current.data);
         return str.toString();
-        /*
+        /* neater output, does not correspond to test results
         if (this.isEmpty()) {
             return "{}";
 

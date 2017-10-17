@@ -52,3 +52,59 @@
 117:error no statement
 118:error no statement
 119:error no statement
+
+ERROR: ')' was expected!
+1 2
+
+
+1
+
+
+
+
+
+1 12
+1 17
+1 2 3 4 5 6
+ERROR: '}' was expected!
+ERROR: ')' was expected!
+ERROR: No set assigned to 'A         '!
+99999999999999999999999999999999999999999999999999999999999999999999999999
+ERROR: No <Eol>! Found ')'
+ERROR: ')' was expected!
+ERROR: ')' was expected!
+ERROR: No set assigned to 'lang5     '!
+ERROR: '/', '?', or a character was expected at the beginning of a statement!
+ERROR: Expected a factor!
+ERROR: Expected an integer!
+ERROR: '/', '?', or a character was expected at the beginning of a statement!
+ERROR: No <Eol>! Found ')'
+ERROR: No <Eol>! Found ')'
+ERROR: No set assigned to 'PieterHijma         '!
+ERROR: No <Eol>! Found 'i'
+ERROR: Expected an integer!
+ERROR: '}' was expected!
+ERROR: '}' was expected!
+ERROR: Expected an integer!
+ERROR: Expected an integer!
+ERROR: Expected an integer!
+ERROR: Expected an integer!
+ERROR: Expected an integer!
+ERROR: Expected an integer!
+ERROR: '/', '?', or a character was expected at the beginning of a statement!
+ERROR: Expected an integer!
+ERROR: '}' was expected!
+ERROR: Expected an integer!
+ERROR: Expected an integer!
+ERROR: '}' was expected!
+ERROR: No <Eol>! Found 'a'
+ERROR: No <Eol>! Found 'a'
+ERROR: '=' was expected!
+54321
+ERROR: '=' was expected!
+98765
+ERROR: '=' was expected!
+ERROR: '/', '?', or a character was expected at the beginning of a statement!
+ERROR: '/', '?', or a character was expected at the beginning of a statement!
+ERROR: '/', '?', or a character was expected at the beginning of a statement!
+ERROR: '/', '?', or a character was expected at the beginning of a statement!
