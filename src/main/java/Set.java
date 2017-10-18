@@ -1,86 +1,87 @@
 import java.math.BigInteger;
 
 /**
- * @structure - no structure
+ * @structure - Unstructured
  * @elements - Elements of type E
- * @domain -
+ * @domain - Unique elements of Type E
  * @pre -
  * @post - A new empty Set has been created to be filled with elements E
  * @constructor - Set()
+ *              - Copy constructor: Set(Set<E>)
+ *	                <dl>
+ *		                <dt><b>PRE-conditie</b><dd>		-
+ *		                <dt><b>POST-conditie</b><dd> 	- A new Set<E> has been created.
+ *                  </dl>
  */
 interface Set<E extends Comparable> {
-
     /**
-     * @pre -
-     * @post - true has been returned if the set is empty, false otherwise.
-     */
-    boolean isEmpty();
-
-    /**
-     * @pre -
-     * @post - a copy of the set has been returned.
-     */
-    Set<E> copy();
-
-
-    /**
-     * @param
-     * @pre -
-     * @post - the set contains element e.
-     */
-    void add(E e);
-
-    /**
-     * @param
-     * @pre -
-     * @post - the set does not contain element e.
-     */
-    void remove(E e);
-
-    /**
-     * @param
-     * @pre -
-     * @post - true has been returned if the set contains element e, false otherwise.
-     */
-    boolean contains(E e);
-
-    /**
-     * @pre -
-     * @post - an int has been returned representing the size of the set.
-     */
-    int cardinality();
-
-    /**
-     * @pre -
-     * @post - an int has been returned representing the size of the set.
-     */
-    List<E> retrieve();
-
-    /**
-     * @param
-     * @pre -
-     * @post - The union of this and set has been returned
+     * Determines the union with the given Set<E> set
+     * @param set
+     * @pre - The given 'set' consists of the elements of type E or is empty.
+     * @post - The union with the given set has been returned as a Set<E>.
      */
     Set<E> union(Set<E> set);
 
     /**
-     * @param
+     * Adds an element of type 'E' to the set.
+     * @param el
      * @pre -
-     * @post - The intersection of this and set has been returned
+     * @post - The element E has been added to the set at a random position.
+     */
+    void addEl(E el);
+
+    /**
+     * Removes a random element from the set and returns it.
+     * @pre - The set is not empty.
+     * @post - The set is returned without a random element.
+     */
+    E remove();
+
+    /**
+     * Returns the number of elements in the set.
+     * @pre -
+     * @post - The number of elements in the set has been returned.
+     * @return
+     */
+    int cardinality();
+
+    /**
+     * Determines the union with the given Set<E> set.
+     * @param set
+     * @pre - The given 'set' consists of the elements of type E or is empty.
+     * @post - The intersection with the given set has been returned as a Set<E>.
      */
     Set<E> intersection(Set<E> set);
 
     /**
-     * @param
-     * @pre -
-     * @post - The complement of this and set has been returned.
+     * Determines the union with the given Set<E> set.
+     * @param set
+     * @pre - The given 'set' consists of the elements of type E or is empty.
+     * @post - The relative complement with the given set been returned as a Set<E>.
      */
     Set<E> complement(Set<E> set);
 
     /**
-     * @param
-     * @pre -
-     * @post - The symmetric difference of this and set has been returned
+     * Determines the symmetric difference with the given Set<E> set.
+     * @param set
+     * @pre - The given 'set' consists of the elements of type E or is empty.
+     * @post - The symmetric difference with the given set been returned as a Set<E>.
      */
     Set<E> symmDifference(Set<E> set);
+
+    /**
+     * Returns a deep copy of this set.
+     * @pre -
+     * @post - A deep copy of 'this' set been returned as a Set<E>.
+     */
+    Set<E> copy();
+
+    /**
+     * Looks to see element 'el' can be found
+     * @param el - Element to find in the set.
+     * @pre -
+     * @post - True: Element 'el' has been found in the set.
+     *       - False: Element 'el' has not been found in the set.
+     */
+    boolean find(E el);
 }

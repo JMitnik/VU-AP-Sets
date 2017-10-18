@@ -1,5 +1,6 @@
-import java.math.BigInteger;
-public class List<E extends Comparable> implements ListInterface<E>{
+public class List<E extends Comparable<E>> implements ListInterface<E>{
+
+    private Node current;
 
     private class Node {
 
@@ -12,127 +13,175 @@ public class List<E extends Comparable> implements ListInterface<E>{
         }
 
         public Node(E data, Node prior, Node next) {
-            this.data = data;
+            this.data = data == null ? null : data;
             this.prior = prior;
             this.next = next;
         }
-
     }
 
-    private int size;
-    private Node current;
-
-    public List() {
-        this.size = 0;
+    List() {
         this.current = null;
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return current == null;
     }
 
     @Override
     public ListInterface<E> init() {
-        this.size = 0;
-        this.current = null;
+        current = null;
         return this;
     }
 
     @Override
     public int size() {
-        return this.size;
+        Node currentHolder = current;
+        goToFirst();
+        int length = countNodes();
+        current = currentHolder;
+        return length;
+    }
+
+    /**
+     * Counts the number of nodes in the list.
+     * @return int
+     */
+    private int countNodes() {
+        if (current == null) {
+            return 0;
+        } else if (current.next == null) {
+            return 1;
+        } else {
+            goToNext();
+            return 1 + countNodes();
+        }
+    }
+
+    /**
+     * Checks if 'current' is the first element of the List.
+     * @return boolean - True if first element, else false.
+     */
+    private boolean isAtStart() {
+        return current.prior == null;
+    }
+
+    /**
+     * Checks if 'current' is the last element of the List.
+     * @return boolean - True if last element, else false.
+     */
+    private boolean isAtEnd() {
+        return current.next == null;
+    }
+
+    /**
+     * Moves 'current' to the appropriated sorted position for value 'd' in the list.
+     * @param d - Element to be a
+     */
+    private void goToOrderIndex(E d) {
+        goToFirst();
+
+        while (d.compareTo(current.data) > 0 && !isAtEnd()) {
+            goToNext();
+        }
     }
 
     @Override
     public ListInterface<E> insert(E d) {
-        Node nd = new Node(d, null, null);
-
-        if (this.isEmpty()) {
-            size++;
-            current = nd;
-            return this;//break "loop"?
-
-        } else if (this.current.next == null) {
-            current.next = nd;
-            nd.prior = current;
-            nd.next = null;
-
-        } else if (this.current.prior == null) {
-            current.prior = nd;
-            nd.prior = null;
-            nd.next = current;
-
+        if (isEmpty()) {
+            current = new Node(d, null, null);
         } else {
-            // element is inserted AFTER current element
-            current.next.prior = nd;
-            nd.prior = current;
-            nd.next = current.next;
-            current.next = nd;
+            goToOrderIndex(d);
+            insertInOrder(d);
         }
 
-        size++;
-        current = nd;
         return this;
+    }
+
+    /**
+     * Inserts value 'd' before or after 'current', based on the value of 'current.data' and 'd'.
+     * @param d
+     */
+    private void insertInOrder(E d) {
+        if (d.compareTo(current.data) > 0 ) {
+            insertLargerEl(d);
+        } else {
+            insertSmallerEqualEl(d);
+        }
+    }
+
+    /**
+     * Creates a new node for element 'd' after 'current'.
+     * @param d
+     */
+    private void insertLargerEl(E d) {
+        if (!isAtEnd()) {
+            current.next = current.next.prior = new Node(d, current, current.next);
+        } else {
+            current.next = new Node(d, current, null);
+        }
+
+        goToNext();
+    }
+
+    /**
+     * Creates a new node for element 'd' before 'current'.
+     * @param d
+     */
+    private void insertSmallerEqualEl(E d) {
+        if (!isAtStart()) {
+            current.prior = current.prior.next = new Node(d, current.prior, current);
+        } else {
+            current.prior = new Node(d, null, current);
+        }
+
+        goToPrevious();
     }
 
     @Override
     public E retrieve() {
-        return this.current.data;
+        return current.data;
     }
 
     @Override
     public ListInterface<E> remove() {
-        if(size == 1) {
+        if (size() == 1) {
             current = null;
-
-        } else if (current.prior == null){
-            current.next.prior = null;
-            current = current.next;
-
-        } else if (current.next == null) {
-            current.prior.next = null;
-            current = current.prior;
-
         } else {
-            current.next.prior = current.prior;
-            current.prior.next = current.next;
-            current = current.next; // could also be prior...
+            if (isAtStart()) {
+                goToNext();
+                current.prior = null;
+            }
+            else if (isAtEnd()) {
+                goToPrevious();
+                current.next = null;
+            } else {
+                current.prior.next = current.next;
+                current.next.prior = current.prior;
+                goToNext();
+            }
         }
-
-        size--;
 
         return this;
     }
 
     @Override
     public boolean find(E d) {
-        if( this.isEmpty() ) {
+        if (isEmpty()) {
             return false;
         }
 
-        this.goToLast();
-        return this.contains(current, d);
-    }
-
-    private boolean contains (Node l, E d) {
-        if (l.prior == null) {
-            return l.data.equals(d);
-        }
-
-        if(l.data.equals(d)){
-            current = l;
-        }
-        return (l.data.equals(d) || contains(l.prior, d));
+        goToOrderIndex(d);
+        return current.data.equals(d);
     }
 
     @Override
     public boolean goToFirst() {
-        if ( this.isEmpty() ) {
+        if (isEmpty()) {
             return false;
         }
 
-        while (current.prior != null) {
+        while (!isAtStart()) {
             current = current.prior;
         }
 
@@ -141,94 +190,61 @@ public class List<E extends Comparable> implements ListInterface<E>{
 
     @Override
     public boolean goToLast() {
-        if ( this.isEmpty() ) {
+        if (isEmpty()) {
             return false;
         }
 
-        while (current.next != null) {
+        while (!isAtEnd()) {
             current = current.next;
         }
 
         return true;
-    }
-
-    public boolean hasNext() {
-        return current.next != null;
     }
 
     @Override
     public boolean goToNext() {
-        if ( this.isEmpty() || current.next == null ) {
+        if (isEmpty()) {
             return false;
         }
 
-        current = current.next;
-        return true;
+        if (current.next != null) {
+            current = current.next;
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public boolean goToPrevious() {
-        if ( this.isEmpty() || current.prior == null ) {
+        if (isEmpty()) {
             return false;
         }
 
-        current = current.prior;
-        return true;
+        if (current.prior != null) {
+            current = current.prior;
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public ListInterface<E> copy() {
-        if ( this.isEmpty() ) {
-            return new List<>();
-        }
+        List<E> result = new List<>();
 
-        this.goToFirst();
-        ListInterface<E> tmp = new List<>();
+        if (!isEmpty()) {
+            goToFirst();
 
-        while (current.next != null) {
-            tmp.insert( current.data );
-            current = current.next;
-        }
-
-        tmp.insert(current.data);
-        return tmp;
-    }
-
-    @Override
-    public String toString() {
-        if (this.isEmpty()) {
-            return "";
-        }
-        this.goToFirst();
-        StringBuilder str = new StringBuilder("");
-
-        while (current.next != null) {
-            str = str.append(current.data).append(" ");
-            current = current.next;
-        }
-
-        str.append(current.data);
-        return str.toString();
-        /* neater output, does not correspond to test results
-        if (this.isEmpty()) {
-            return "{}";
-
-        } else {
-            StringBuilder str = new StringBuilder("{ ");
-            this.goToFirst();
-
-            while (current.next != null) {
-                str = str.append(current.data).append(" , ");
-                current = current.next;
+            while (!isAtEnd()) {
+                result.insert(retrieve());
+                goToNext();
             }
 
-            str.append(current.data).append(" }");
-            return str.toString();
+            result.insert(retrieve());
+            return result;
+        } else {
+            return result.init();
         }
-        */
-    }
-
-
-    public static void main(String[] argv) {
     }
 }

@@ -11,7 +11,7 @@
  * </dl>
  **/
 
-interface ListInterface<E extends Comparable> {
+public interface ListInterface<E extends Comparable> {
 
     /**	@precondition -
      *  @postcondition - FALSE: list is not empty.
@@ -23,7 +23,6 @@ interface ListInterface<E extends Comparable> {
      *	@postcondition - list-POST is empty and has been returned.
      **/
     ListInterface<E> init();
-
 
     /**	@precondition  -
      *	@postcondition - The number of elements has been returned.
@@ -107,16 +106,4 @@ interface ListInterface<E extends Comparable> {
      * @postcondition A deep copy of the list has been returned.
      */
     ListInterface<E> copy();
-
-    /**
-     * @precondition -
-     * @postcondition returns false the current node is not pointing to a next node.
-     */
-    boolean hasNext();
-
-    /**
-     * @precondition -
-     * @postcondition A String is returned with the elements of type E, seperated by commas
-     */
-    String toString();
 }

@@ -1,11 +1,14 @@
-import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
-        String path = "C:\\Users\\wille\\Documents\\Set.txt";
-        new Parser( path ) ;
-        new Parser( System.in );
+    private void start() {
+        new Interpreter(System.in);
+    }
+
+    public static void main(String[] argv) {
+        new Main().start();
     }
 }
