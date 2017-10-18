@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="be95a314-98f1-42fa-8666-9f963b1ceded" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Interpreter.java" afterPath="$PROJECT_DIR$/src/main/java/Interpreter.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -67,7 +68,7 @@
       <file leaf-file-name="List.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/List.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2152">
+            <state relative-caret-position="-512">
               <caret line="83" column="53" lean-forward="false" selection-start-line="83" selection-start-column="53" selection-end-line="83" selection-end-column="53" />
               <folding>
                 <element signature="e#210#211#0" expanded="true" />
@@ -112,8 +113,8 @@
       <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Interpreter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8418">
-              <caret line="370" column="5" lean-forward="true" selection-start-line="370" selection-start-column="5" selection-end-line="370" selection-end-column="5" />
+            <state relative-caret-position="9591">
+              <caret line="421" column="7" lean-forward="true" selection-start-line="421" selection-start-column="7" selection-end-line="421" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -610,7 +611,6 @@
         <option value="$PROJECT_DIR$/src/test/java/Interpreter.java" />
         <option value="$PROJECT_DIR$/src/main/java/IdentiferImp.java" />
         <option value="$PROJECT_DIR$/src/main/java/SetImp.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Interpreter.java" />
         <option value="$PROJECT_DIR$/src/test/java/InterpreterTest.java" />
         <option value="$PROJECT_DIR$/io/syntax-ext.out" />
         <option value="$PROJECT_DIR$/src/main/java/Parser.java" />
@@ -618,6 +618,7 @@
         <option value="$PROJECT_DIR$/src/main/java/Set.java" />
         <option value="$PROJECT_DIR$/src/main/java/List.java" />
         <option value="$PROJECT_DIR$/src/main/java/Identifier.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Interpreter.java" />
       </list>
     </option>
   </component>
@@ -1115,7 +1116,14 @@
       <option name="project" value="LOCAL" />
       <updated>1508355681340</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Improve annotations and readability">
+      <created>1508358671738</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1508358671738</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1151,7 +1159,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92064000" />
+    <option name="totallyTimeSpent" value="92131000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
@@ -1489,44 +1497,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding>
-            <marker date="1508355848000" expanded="false" signature="162:168" ph=" }" />
-            <marker date="1508355848000" expanded="false" signature="212:223" ph=" { " />
-            <marker date="1508355848000" expanded="false" signature="242:248" ph=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ListInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1306">
           <caret line="73" column="12" lean-forward="false" selection-start-line="73" selection-start-column="12" selection-end-line="73" selection-end-column="12" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/List.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2152">
-          <caret line="83" column="53" lean-forward="false" selection-start-line="83" selection-start-column="53" selection-end-line="83" selection-end-column="53" />
-          <folding>
-            <element signature="e#210#211#0" expanded="true" />
-            <element signature="e#253#254#0" expanded="true" />
-            <element signature="e#451#452#0" expanded="true" />
-            <element signature="e#486#487#0" expanded="true" />
-            <element signature="e#532#533#0" expanded="true" />
-            <element signature="e#570#571#0" expanded="true" />
-            <element signature="e#1366#1367#0" expanded="true" />
-            <element signature="e#1410#1411#0" expanded="true" />
-            <element signature="e#1578#1579#0" expanded="true" />
-            <element signature="e#1621#1622#0" expanded="true" />
-            <element signature="e#3239#3240#0" expanded="true" />
-            <element signature="e#3274#3275#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1548,10 +1523,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/List.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-512">
+          <caret line="83" column="53" lean-forward="false" selection-start-line="83" selection-start-column="53" selection-end-line="83" selection-end-column="53" />
+          <folding>
+            <element signature="e#210#211#0" expanded="true" />
+            <element signature="e#253#254#0" expanded="true" />
+            <element signature="e#451#452#0" expanded="true" />
+            <element signature="e#486#487#0" expanded="true" />
+            <element signature="e#532#533#0" expanded="true" />
+            <element signature="e#570#571#0" expanded="true" />
+            <element signature="e#1366#1367#0" expanded="true" />
+            <element signature="e#1410#1411#0" expanded="true" />
+            <element signature="e#1578#1579#0" expanded="true" />
+            <element signature="e#1621#1622#0" expanded="true" />
+            <element signature="e#3239#3240#0" expanded="true" />
+            <element signature="e#3274#3275#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding>
+            <marker date="1508355848000" expanded="false" signature="162:168" ph=" }" />
+            <marker date="1508355848000" expanded="false" signature="212:223" ph=" { " />
+            <marker date="1508355848000" expanded="false" signature="242:248" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Interpreter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8418">
-          <caret line="370" column="5" lean-forward="true" selection-start-line="370" selection-start-column="5" selection-end-line="370" selection-end-column="5" />
+        <state relative-caret-position="9591">
+          <caret line="421" column="7" lean-forward="true" selection-start-line="421" selection-start-column="7" selection-end-line="421" selection-end-column="7" />
           <folding />
         </state>
       </provider>

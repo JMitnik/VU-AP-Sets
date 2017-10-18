@@ -410,7 +410,7 @@ public class Interpreter {
     }
 
     /**
-     * Checks if the next character is an additive operator.
+     * Checks if the next character is an additive operator[+, |, -].
      * @param in - The Scanner portion of the input.
      * @return boolean - True if the next character is an additive operator, else false.
      */
