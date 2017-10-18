@@ -64,6 +64,7 @@ public class Interpreter {
         }
 
         System.out.printf("\n");
+        System.out.printf(">: ");
     }
 
     private Set readExpression(Scanner input) throws APException {
