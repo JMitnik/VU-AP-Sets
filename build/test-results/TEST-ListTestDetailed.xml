@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ListTestDetailed" tests="30" skipped="0" failures="0" errors="0" timestamp="2017-10-15T11:33:39" hostname="Jonathans-MBP.dynamic.ziggo.nl" time="0.05">
+  <properties/>
+  <testcase name="goToPrevious_pointsToPreviousElement" classname="ListTestDetailed" time="0.003"/>
+  <testcase name="insert_returnsSameList" classname="ListTestDetailed" time="0.002"/>
+  <testcase name="goToLast_returnsFalseOnEmptyList" classname="ListTestDetailed" time="0.002"/>
+  <testcase name="find_pointsToFirstDuplicate" classname="ListTestDetailed" time="0.002"/>
+  <testcase name="goToPrevious_returnsFalseOnFirstElement" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="goToPrevious_returnsFalseOnEmptyList" classname="ListTestDetailed" time="0.001"/>
+  <testcase name="insert_elementShouldBeCopied" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="find_currentPointsCorrectlyWhenNotFound" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="isEmpty_isCorrect" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="goToNext_pointsToNextElement" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="retrieve_returnsElement" classname="ListTestDetailed" time="0.001"/>
+  <testcase name="init_emptiesList" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="insert_duplicateIsAdded" classname="ListTestDetailed" time="0.001"/>
+  <testcase name="goToLast_pointsToFirstElement" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="remove_returnsSameList" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="goToFirst_returnsFalseOnEmptyList" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="remove_removesMiddleElementCorrectly" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="find_isCorrect" classname="ListTestDetailed" time="0.002"/>
+  <testcase name="remove_decreasesSize" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="insert_isAddedSorted" classname="ListTestDetailed" time="0.001"/>
+  <testcase name="goToNext_returnsFalseOnLastElement" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="remove_doesNotRemoveBothDuplicates" classname="ListTestDetailed" time="0.001"/>
+  <testcase name="insert_increasesSize" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="remove_removesOnlyElement" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="insert_isAdded" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="init_returnsSameList" classname="ListTestDetailed" time="0.001"/>
+  <testcase name="size_isCorrect" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="remove_removesLastElementCorrectly" classname="ListTestDetailed" time="0.001"/>
+  <testcase name="goToNext_returnsFalseOnEmptyList" classname="ListTestDetailed" time="0.0"/>
+  <testcase name="goToFirst_pointsToFirstElement" classname="ListTestDetailed" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

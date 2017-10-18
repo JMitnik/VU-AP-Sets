@@ -1,0 +1,101 @@
+public class SetImp<E extends Comparable> implements Set<E>{
+    private ListInterface<E> elements;
+
+    SetImp() {
+        this.elements = new List<>();
+    }
+
+    private SetImp(SetImp<E> set) {
+        this.elements = set.elements.copy();
+    }
+
+    @Override
+    public void addEl(E el) {
+        if (!find(el)) {
+            elements.insert(el);
+        }
+    }
+
+    @Override
+    public E remove() {
+        E el = this.elements.retrieve();
+        this.elements = this.elements.remove();
+
+        return el;
+    }
+
+    @Override
+    public int cardinality() {
+        return this.elements.size();
+    }
+
+    @Override
+    public boolean find(E matchEl) {
+        return this.elements.find(matchEl);
+    }
+
+    @Override
+    public Set<E> intersection(Set<E> set) {
+        Set<E> result = new SetImp<>();
+        Set<E> workingSetLhs = this.copy();
+        Set<E> workingSetRhs = set.copy();
+
+        while (workingSetLhs.cardinality() != 0) {
+            E retrievedEl = workingSetLhs.remove();
+
+            if (workingSetRhs.find(retrievedEl)) {
+                result.addEl(retrievedEl);
+            }
+        }
+
+        return result;
+    }
+
+
+    @Override
+    public Set<E> union(Set<E> set) {
+        Set<E> result = new SetImp<>();
+        Set<E> workingSetLhs = this.copy();
+        Set<E> workingSetRhs = set.copy();
+
+        while (workingSetLhs.cardinality() != 0) {
+            result.addEl(workingSetLhs.remove());
+        }
+
+        while (workingSetRhs.cardinality() != 0) {
+            result.addEl(workingSetRhs.remove());
+        }
+
+        return result;
+    }
+
+    @Override
+    public Set<E> complement(Set<E> set) {
+        Set<E> result = new SetImp<>();
+        Set<E> workingSetLhs = this.copy();
+        Set<E> workingSetRhs = set.copy();
+
+        while (workingSetLhs.cardinality() != 0) {
+            E el = workingSetLhs.remove();
+
+            if (!workingSetRhs.find(el)) {
+                result.addEl(el);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public Set<E> symmDifference(Set<E> set) {
+        Set<E> leftCom = this.complement(set);
+        Set<E> rightCom = set.complement(this);
+
+        return leftCom.union(rightCom);
+    }
+
+    @Override
+    public Set<E> copy() {
+        return new SetImp<>(this);
+    }
+}
