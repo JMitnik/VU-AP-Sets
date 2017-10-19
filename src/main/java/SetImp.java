@@ -98,4 +98,9 @@ public class SetImp<E extends Comparable> implements Set<E>{
     public Set<E> copy() {
         return new SetImp<>(this);
     }
+
+    @Override
+    public String toString() {
+        return this.elements.toString();
+    }
 }

@@ -247,4 +247,23 @@ public class List<E extends Comparable<E>> implements ListInterface<E>{
             return result.init();
         }
     }
+
+    @Override
+    // Prints all the elements in the list called to their toString() method, separated by a space
+    public String toString() {
+        if (size() == 0) {
+            return "";
+        }
+        StringBuilder str = new StringBuilder();
+        goToFirst();
+
+        while (!isAtEnd()) {
+            str.append( retrieve().toString() );
+            str.append(" ");
+            goToNext();
+        }
+
+        str.append( retrieve().toString() );
+        return str.toString();
+    }
 }

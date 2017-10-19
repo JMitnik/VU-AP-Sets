@@ -1,7 +1,3 @@
-import java.util.HashMap;
-import java.util.HashMap;
-import java.util.Scanner;
-
 public class Main {
 
     private void start() {
