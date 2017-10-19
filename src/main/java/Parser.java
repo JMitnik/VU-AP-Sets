@@ -233,7 +233,6 @@ public class Parser {
             terminateSpaces(input);
             set.add(readBigInteger(input));
             terminateSpaces(input);
-
         }
 
         readCharacter(input, '}');
@@ -288,9 +287,11 @@ public class Parser {
     // Checks to see if there are any tokens left in the line
     private void readEol(Scanner in) throws APException {
         terminateSpaces(in);
+
+        // Looks for a token in the line, if it is at the end of line, the method returns null
+        // Has to be done this way because hasNext() returns true, it has a token \n still.
         if ( in.findInLine("") != null ){
-            //throw new APException("An <EoL> was expected");
-            throw new APException("No <Eol>! Found '" + in.next() + "'");
+            throw new APException("An <EoL> was expected");
         }
     }
 
